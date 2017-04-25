@@ -1,19 +1,13 @@
 package com.dianping.cat.consumer.build;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import org.unidal.dal.jdbc.configuration.AbstractJdbcResourceConfigurator;
-import org.unidal.initialization.Module;
-import org.unidal.lookup.configuration.Component;
-
 import com.dianping.cat.analysis.MessageAnalyzer;
 import com.dianping.cat.config.content.ContentFetcher;
 import com.dianping.cat.config.content.DefaultContentFetcher;
 import com.dianping.cat.config.server.ServerConfigManager;
 import com.dianping.cat.config.server.ServerFilterConfigManager;
 import com.dianping.cat.consumer.CatConsumerModule;
+import com.dianping.cat.consumer.chain.ChainAnalyzer;
+import com.dianping.cat.consumer.chain.ChainDelegate;
 import com.dianping.cat.consumer.config.AllReportConfigManager;
 import com.dianping.cat.consumer.config.ProductLineConfigManager;
 import com.dianping.cat.consumer.cross.CrossAnalyzer;
@@ -33,11 +27,7 @@ import com.dianping.cat.consumer.matrix.MatrixAnalyzer;
 import com.dianping.cat.consumer.matrix.MatrixDelegate;
 import com.dianping.cat.consumer.metric.MetricAnalyzer;
 import com.dianping.cat.consumer.metric.MetricConfigManager;
-import com.dianping.cat.consumer.problem.DefaultProblemHandler;
-import com.dianping.cat.consumer.problem.LongExecutionProblemHandler;
-import com.dianping.cat.consumer.problem.ProblemAnalyzer;
-import com.dianping.cat.consumer.problem.ProblemDelegate;
-import com.dianping.cat.consumer.problem.ProblemHandler;
+import com.dianping.cat.consumer.problem.*;
 import com.dianping.cat.consumer.state.StateAnalyzer;
 import com.dianping.cat.consumer.state.StateDelegate;
 import com.dianping.cat.consumer.storage.StorageAnalyzer;
@@ -54,14 +44,17 @@ import com.dianping.cat.core.dal.ProjectDao;
 import com.dianping.cat.hadoop.hdfs.HdfsUploader;
 import com.dianping.cat.message.PathBuilder;
 import com.dianping.cat.message.storage.MessageBucketManager;
-import com.dianping.cat.report.DefaultReportManager;
-import com.dianping.cat.report.DomainValidator;
-import com.dianping.cat.report.ReportBucketManager;
-import com.dianping.cat.report.ReportDelegate;
-import com.dianping.cat.report.ReportManager;
+import com.dianping.cat.report.*;
 import com.dianping.cat.service.ProjectService;
 import com.dianping.cat.statistic.ServerStatisticManager;
 import com.dianping.cat.task.TaskManager;
+import org.unidal.dal.jdbc.configuration.AbstractJdbcResourceConfigurator;
+import org.unidal.initialization.Module;
+import org.unidal.lookup.configuration.Component;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class ComponentsConfigurator extends AbstractJdbcResourceConfigurator {
 	public static void main(String[] args) {
@@ -73,6 +66,7 @@ public class ComponentsConfigurator extends AbstractJdbcResourceConfigurator {
 		List<Component> all = new ArrayList<Component>();
 
 		all.addAll(defineTransactionComponents());
+		all.addAll(defineChainComponents());
 		all.addAll(defineEventComponents());
 		all.addAll(defineProblemComponents());
 		all.addAll(defineHeartbeatComponents());
@@ -147,7 +141,7 @@ public class ComponentsConfigurator extends AbstractJdbcResourceConfigurator {
 		      .req(ReportBucketManager.class, HourlyReportDao.class, HourlyReportContentDao.class, DomainValidator.class) //
 		      .config(E("name").value(ID)));
 		all.add(C(ReportDelegate.class, ID, EventDelegate.class).req(TaskManager.class, ServerFilterConfigManager.class,
-		      AllReportConfigManager.class));
+				AllReportConfigManager.class));
 
 		return all;
 	}
@@ -264,8 +258,22 @@ public class ComponentsConfigurator extends AbstractJdbcResourceConfigurator {
 		      .req(ReportBucketManager.class, HourlyReportDao.class, HourlyReportContentDao.class, DomainValidator.class) //
 		      .config(E("name").value(ID)));
 		all.add(C(ReportDelegate.class, ID, TransactionDelegate.class).req(TaskManager.class,
-		      ServerFilterConfigManager.class, AllReportConfigManager.class));
+				ServerFilterConfigManager.class, AllReportConfigManager.class));
 
+		return all;
+	}
+
+	private Collection<Component> defineChainComponents(){
+		final List<Component> all = new ArrayList<Component>();
+		final String ID = ChainAnalyzer.ID;
+		all.add(C(MessageAnalyzer.class, ID, ChainAnalyzer.class).is(PER_LOOKUP).req(ReportManager.class, ID)
+				.req(ReportDelegate.class, ID).req(ServerConfigManager.class, ServerFilterConfigManager.class));
+		all.add(C(ReportManager.class, ID, DefaultReportManager.class).is(PER_LOOKUP) //
+				.req(ReportDelegate.class, ID) //
+				.req(ReportBucketManager.class, HourlyReportDao.class, HourlyReportContentDao.class, DomainValidator.class) //
+				.config(E("name").value(ID)));
+		all.add(C(ReportDelegate.class, ID, ChainDelegate.class).req(TaskManager.class,
+				ServerFilterConfigManager.class, AllReportConfigManager.class));
 		return all;
 	}
 

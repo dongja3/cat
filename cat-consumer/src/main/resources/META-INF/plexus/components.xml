@@ -67,6 +67,71 @@
 		</component>
 		<component>
 			<role>com.dianping.cat.analysis.MessageAnalyzer</role>
+			<role-hint>chain</role-hint>
+			<implementation>com.dianping.cat.consumer.chain.ChainAnalyzer</implementation>
+			<instantiation-strategy>per-lookup</instantiation-strategy>
+			<requirements>
+				<requirement>
+					<role>com.dianping.cat.report.ReportManager</role>
+					<role-hint>chain</role-hint>
+				</requirement>
+				<requirement>
+					<role>com.dianping.cat.report.ReportDelegate</role>
+					<role-hint>chain</role-hint>
+				</requirement>
+				<requirement>
+					<role>com.dianping.cat.config.server.ServerConfigManager</role>
+				</requirement>
+				<requirement>
+					<role>com.dianping.cat.config.server.ServerFilterConfigManager</role>
+				</requirement>
+			</requirements>
+		</component>
+		<component>
+			<role>com.dianping.cat.report.ReportManager</role>
+			<role-hint>chain</role-hint>
+			<implementation>com.dianping.cat.report.DefaultReportManager</implementation>
+			<instantiation-strategy>per-lookup</instantiation-strategy>
+			<configuration>
+				<name>chain</name>
+			</configuration>
+			<requirements>
+				<requirement>
+					<role>com.dianping.cat.report.ReportDelegate</role>
+					<role-hint>chain</role-hint>
+				</requirement>
+				<requirement>
+					<role>com.dianping.cat.report.ReportBucketManager</role>
+				</requirement>
+				<requirement>
+					<role>com.dianping.cat.core.dal.HourlyReportDao</role>
+				</requirement>
+				<requirement>
+					<role>com.dianping.cat.core.dal.HourlyReportContentDao</role>
+				</requirement>
+				<requirement>
+					<role>com.dianping.cat.report.DomainValidator</role>
+				</requirement>
+			</requirements>
+		</component>
+		<component>
+			<role>com.dianping.cat.report.ReportDelegate</role>
+			<role-hint>chain</role-hint>
+			<implementation>com.dianping.cat.consumer.chain.ChainDelegate</implementation>
+			<requirements>
+				<requirement>
+					<role>com.dianping.cat.task.TaskManager</role>
+				</requirement>
+				<requirement>
+					<role>com.dianping.cat.config.server.ServerFilterConfigManager</role>
+				</requirement>
+				<requirement>
+					<role>com.dianping.cat.consumer.config.AllReportConfigManager</role>
+				</requirement>
+			</requirements>
+		</component>
+		<component>
+			<role>com.dianping.cat.analysis.MessageAnalyzer</role>
 			<role-hint>event</role-hint>
 			<implementation>com.dianping.cat.consumer.event.EventAnalyzer</implementation>
 			<instantiation-strategy>per-lookup</instantiation-strategy>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model>
+	<entity name="chain-report" root="true">
+		<attribute name="domain" value-type="String" />
+		<entity-ref name="chain" type="list" names="chains" />
+	</entity>
+
+	<entity name="chain">
+		<attribute name="level" value-type="int"/>
+		<attribute name="domain" value-type="String" />
+		<attribute name="transactionName" value-type="String" />
+		<attribute name="callCount" value-type="long" />
+		<attribute name="avg" value-type="double" />
+		<attribute name="sum" value-type="double" />
+		<attribute name="dependency" value-type="double" />
+		<attribute name="timeRatio" value-type="double" />
+		<entity-ref name="chain" type="list" names="children" />
+	</entity>
+</model>
+
