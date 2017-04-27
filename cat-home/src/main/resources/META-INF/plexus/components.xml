@@ -594,6 +594,36 @@
 			</requirements>
 		</component>
 		<component>
+			<role>com.dianping.cat.report.page.chain.service.ChainReportService</role>
+			<implementation>com.dianping.cat.report.page.chain.service.ChainReportService</implementation>
+			<requirements>
+				<requirement>
+					<role>com.dianping.cat.core.dal.HourlyReportDao</role>
+				</requirement>
+				<requirement>
+					<role>com.dianping.cat.core.dal.DailyReportDao</role>
+				</requirement>
+				<requirement>
+					<role>com.dianping.cat.core.dal.WeeklyReportDao</role>
+				</requirement>
+				<requirement>
+					<role>com.dianping.cat.core.dal.MonthlyReportDao</role>
+				</requirement>
+				<requirement>
+					<role>com.dianping.cat.core.dal.HourlyReportContentDao</role>
+				</requirement>
+				<requirement>
+					<role>com.dianping.cat.core.dal.DailyReportContentDao</role>
+				</requirement>
+				<requirement>
+					<role>com.dianping.cat.core.dal.WeeklyReportContentDao</role>
+				</requirement>
+				<requirement>
+					<role>com.dianping.cat.core.dal.MonthlyReportContentDao</role>
+				</requirement>
+			</requirements>
+		</component>
+		<component>
 			<role>com.dianping.cat.report.page.event.service.EventReportService</role>
 			<implementation>com.dianping.cat.report.page.event.service.EventReportService</implementation>
 			<requirements>
@@ -1204,6 +1234,16 @@
 				</requirement>
 				<requirement>
 					<role>com.dianping.cat.report.page.transaction.task.TransactionMerger</role>
+				</requirement>
+			</requirements>
+		</component>
+		<component>
+			<role>com.dianping.cat.report.task.TaskBuilder</role>
+			<role-hint>chain</role-hint>
+			<implementation>com.dianping.cat.report.page.chain.task.ChainReportBuilder</implementation>
+			<requirements>
+				<requirement>
+					<role>com.dianping.cat.report.page.chain.service.ChainReportService</role>
 				</requirement>
 			</requirements>
 		</component>

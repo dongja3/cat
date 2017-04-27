@@ -87,14 +87,10 @@ public class ChainAnalyzer extends AbstractMessageAnalyzer<ChainReport> implemen
     }
 
     protected void processTransaction(ChainReport report,Transaction t) {
-        TransactionChain rootChain = report.findChain(t.getName());
-        if(rootChain==null){
-            rootChain = new TransactionChain(t.getName());
-            report.addChain(rootChain);
-        }
+       TransactionChain rootChain = report.findOrCreateChain(t.getName());
 
         rootChain.setSum(rootChain.getSum()+t.getDurationInMillis());
-        rootChain.setCallCount(rootChain.getCallCount() + 1);
+        rootChain.incCallCount();
         rootChain.setAvg(rootChain.getSum() / rootChain.getCallCount());
         rootChain.setLevel(0);
         rootChain.setDependency(1);
@@ -110,25 +106,12 @@ public class ChainAnalyzer extends AbstractMessageAnalyzer<ChainReport> implemen
     }
 
     private void add2TransactionChain(Transaction t, TransactionChain parentTxnChain, int level,TransactionChain root){
-        TransactionChain tc =null;
-        for(TransactionChain childTxnChain : parentTxnChain.getChildren()){
-            if(childTxnChain.getTransactionName().equals(t.getName())){
-                tc = childTxnChain;
-                break;
-            }
-        }
-        if(tc==null){
-            tc = new TransactionChain(t.getName());
-            tc.setSum(t.getDurationInMillis());
-            tc.setAvg(t.getDurationInMillis());
-            tc.setCallCount(1);
-            tc.setLevel(level);
-            parentTxnChain.getChildren().add(tc);
-        }else{
-            tc.setSum(tc.getSum() + t.getDurationInMillis());
-            tc.setCallCount(tc.getCallCount() + 1);
-            tc.setAvg(tc.getSum() / tc.getCallCount());
-        }
+        TransactionChain tc = parentTxnChain.findOrCreateChain(t.getName());
+        tc.setSum(tc.getSum() + t.getDurationInMillis());
+        tc.incCallCount();
+        tc.setAvg(tc.getSum() / tc.getCallCount());
+        tc.setLevel(level);
+
         float dependency = (float)tc.getCallCount()/(float)root.getCallCount();
         if(dependency>1.0){
             dependency=(float)1;

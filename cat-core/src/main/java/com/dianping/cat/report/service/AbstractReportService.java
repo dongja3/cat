@@ -1,43 +1,17 @@
 package com.dianping.cat.report.service;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
+import com.dianping.cat.Cat;
+import com.dianping.cat.core.dal.*;
+import com.dianping.cat.helper.TimeHelper;
+import com.dianping.cat.message.Event;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
 import org.unidal.dal.jdbc.DalException;
 import org.unidal.dal.jdbc.DalNotFoundException;
 import org.unidal.lookup.annotation.Inject;
 
-import com.dianping.cat.Cat;
-import com.dianping.cat.core.dal.DailyReport;
-import com.dianping.cat.core.dal.DailyReportDao;
-import com.dianping.cat.core.dal.HourlyReport;
-import com.dianping.cat.core.dal.HourlyReportContent;
-import com.dianping.cat.core.dal.HourlyReportContentDao;
-import com.dianping.cat.core.dal.HourlyReportDao;
-import com.dianping.cat.core.dal.HourlyReportEntity;
-import com.dianping.cat.core.dal.MonthlyReport;
-import com.dianping.cat.core.dal.MonthlyReportDao;
-import com.dianping.cat.core.dal.MonthlyReportEntity;
-import com.dianping.cat.core.dal.WeeklyReport;
-import com.dianping.cat.core.dal.WeeklyReportDao;
-import com.dianping.cat.core.dal.WeeklyReportEntity;
-import com.dianping.cat.helper.TimeHelper;
-import com.dianping.cat.core.dal.DailyReportContent;
-import com.dianping.cat.core.dal.DailyReportContentDao;
-import com.dianping.cat.core.dal.MonthlyReportContent;
-import com.dianping.cat.core.dal.MonthlyReportContentDao;
-import com.dianping.cat.core.dal.WeeklyReportContent;
-import com.dianping.cat.core.dal.WeeklyReportContentDao;
-import com.dianping.cat.message.Event;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public abstract class AbstractReportService<T> implements LogEnabled, ReportService<T> {
 
@@ -82,6 +56,9 @@ public abstract class AbstractReportService<T> implements LogEnabled, ReportServ
 			return false;
 		}
 	}
+
+
+
 
 	@Override
 	public boolean insertHourlyReport(HourlyReport report, byte[] content) {
@@ -178,7 +155,7 @@ public abstract class AbstractReportService<T> implements LogEnabled, ReportServ
 		private static final long serialVersionUID = 1L;
 
 		@Override
-		protected boolean removeEldestEntry(Entry<String, Set<String>> eldest) {
+		protected boolean removeEldestEntry(Map.Entry<String, Set<String>> eldest) {
 			return size() > 1000;
 		}
 	};

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<chain-report domain="group">
+<chain level="0" transactionName="T1" callCount="1" avg="80000.0" sum="80000.0" dependency="1.0000" timeRatio="1.0000">
+ <chain level="1" transactionName="T1_1" callCount="1" avg="10000.0" sum="10000.0" dependency="1.0000" timeRatio="0.1250">
+<chain level="2" transactionName="T1_1_1" callCount="1" avg="10000.0" sum="10000.0" dependency="1.0000" timeRatio="0.1250">
+</chain>
+<chain level="2" transactionName="T1_1_2" callCount="1" avg="20000.0" sum="20000.0" dependency="1.0000" timeRatio="0.2500">
+ </chain>
+</chain>
+<chain level="1" transactionName="T1_2" callCount="1" avg="20000.0" sum="20000.0" dependency="1.0000" timeRatio="0.2500">
+</chain>
+</chain>
+<chain level="0" transactionName="T2" callCount="1" avg="80000.0" sum="80000.0" dependency="1.0000" timeRatio="1.0000">
+<chain level="1" transactionName="T2_1" callCount="1" avg="10000.0" sum="10000.0" dependency="1.0000" timeRatio="0.1250">
+<chain level="2" transactionName="T2_1_1" callCount="1" avg="10000.0" sum="10000.0" dependency="1.0000" timeRatio="0.1250">
+</chain>
+<chain level="2" transactionName="T2_1_2" callCount="1" avg="20000.0" sum="20000.0" dependency="1.0000" timeRatio="0.2500">
+</chain>
+</chain>
+<chain level="1" transactionName="T2_2" callCount="1" avg="20000.0" sum="20000.0" dependency="1.0000" timeRatio="0.2500">
+</chain>
+</chain>
+</chain-report>
