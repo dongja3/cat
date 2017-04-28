@@ -11,6 +11,8 @@ public enum ReportPage implements Page {
 
    TRANSACTION("transaction", "t", "Transaction", "Transaction Summary Report", true),
 
+   CHAIN("chain", "chain", "Chain", "Chain Summary Report", true),
+
    EVENT("event", "e", "Event", "Event Summary Report", true),
 
    HEARTBEAT("heartbeat", "h", "Heartbeat", "Heartbeat Summary Report", true),

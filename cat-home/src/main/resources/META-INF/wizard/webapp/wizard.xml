@@ -11,6 +11,9 @@
          <page name="transaction" title="Transaction" path="t" view="/jsp/report/transaction/transaction.jsp">
             <description>Transaction Summary Report</description>
          </page>
+         <page name="chain" title="Chain" path="chain" view="/jsp/report/chain/chain.jsp">
+            <description>Transaction Summary Report</description>
+         </page>
          <page name="event" title="Event" path="e" view="/jsp/report/event/event.jsp">
             <description>Event Summary Report</description>
          </page>

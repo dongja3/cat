@@ -46,6 +46,12 @@
 							<b class="arrow"></b></li>
 					</ul>
 				</li>
+				<li id="Chain_report" >
+                	<a href="/cat/r/chain?domain=${model.domain}&ip=${model.ipAddress}&date=${model.date}&reportType=${payload.reportType}&op=${payload.action.name}">
+                		<i class="menu-icon glyphicon glyphicon-flowchart"></i>
+                		<span class="menu-text">Chain</span>
+                	</a>
+                </li>
 				<li id="Transaction_report" >
 					<a href="/cat/r/t?domain=${model.domain}&ip=${model.ipAddress}&date=${model.date}&reportType=${payload.reportType}&op=${payload.action.name}">
 						<i class="menu-icon glyphicon glyphicon-time"></i>

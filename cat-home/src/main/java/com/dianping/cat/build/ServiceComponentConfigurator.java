@@ -1,13 +1,8 @@
 package com.dianping.cat.build;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.unidal.lookup.configuration.AbstractResourceConfigurator;
-import org.unidal.lookup.configuration.Component;
-
 import com.dianping.cat.analysis.MessageConsumer;
 import com.dianping.cat.config.server.ServerConfigManager;
+import com.dianping.cat.consumer.chain.ChainAnalyzer;
 import com.dianping.cat.consumer.cross.CrossAnalyzer;
 import com.dianping.cat.consumer.dependency.DependencyAnalyzer;
 import com.dianping.cat.consumer.dump.LocalMessageBucketManager;
@@ -26,6 +21,10 @@ import com.dianping.cat.message.codec.WaterfallMessageCodec;
 import com.dianping.cat.message.spi.MessageCodec;
 import com.dianping.cat.message.storage.MessageBucketManager;
 import com.dianping.cat.report.ReportBucketManager;
+import com.dianping.cat.report.page.chain.service.ChainReportService;
+import com.dianping.cat.report.page.chain.service.CompositeChainService;
+import com.dianping.cat.report.page.chain.service.HistoricalChainService;
+import com.dianping.cat.report.page.chain.service.LocalChainService;
 import com.dianping.cat.report.page.cross.service.CompositeCrossService;
 import com.dianping.cat.report.page.cross.service.CrossReportService;
 import com.dianping.cat.report.page.cross.service.HistoricalCrossService;
@@ -76,6 +75,11 @@ import com.dianping.cat.report.page.transaction.service.TransactionReportService
 import com.dianping.cat.report.service.LocalModelService;
 import com.dianping.cat.report.service.ModelService;
 import com.dianping.cat.service.IpService;
+import org.unidal.lookup.configuration.AbstractResourceConfigurator;
+import org.unidal.lookup.configuration.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 class ServiceComponentConfigurator extends AbstractResourceConfigurator {
 	@Override
@@ -89,6 +93,14 @@ class ServiceComponentConfigurator extends AbstractResourceConfigurator {
 		all.add(C(ModelService.class, TransactionAnalyzer.ID, CompositeTransactionService.class) //
 		      .req(ServerConfigManager.class) //
 		      .req(ModelService.class, new String[] { "transaction-historical" }, "m_services"));
+
+		all.add(C(LocalModelService.class, LocalChainService.ID, LocalChainService.class) //
+				.req(ReportBucketManager.class, MessageConsumer.class, ServerConfigManager.class));
+		all.add(C(ModelService.class, "chain-historical", HistoricalChainService.class) //
+				.req(ChainReportService.class, ServerConfigManager.class));
+		all.add(C(ModelService.class, ChainAnalyzer.ID, CompositeChainService.class) //
+				.req(ServerConfigManager.class) //
+				.req(ModelService.class, new String[] { "chain-historical" }, "m_services"));
 
 		all.add(C(LocalModelService.class, LocalEventService.ID, LocalEventService.class) //
 		      .req(ReportBucketManager.class, MessageConsumer.class, ServerConfigManager.class));
