@@ -5,7 +5,6 @@ import com.dianping.cat.consumer.chain.ChainAnalyzer;
 import com.dianping.cat.consumer.chain.ChainReportMerger;
 import com.dianping.cat.consumer.chain.ChainStatisticsComputer;
 import com.dianping.cat.consumer.chain.model.entity.ChainReport;
-import com.dianping.cat.consumer.chain.model.entity.TransactionChain;
 import com.dianping.cat.consumer.chain.model.transform.DefaultNativeParser;
 import com.dianping.cat.core.dal.*;
 import com.dianping.cat.helper.TimeHelper;
@@ -23,6 +22,8 @@ public class ChainReportService  extends AbstractReportService<ChainReport> {
     @Override
     public ChainReport makeReport(String domain, Date start, Date end) {
         ChainReport report = new ChainReport(domain);
+        report.setStartTime(start);
+        report.setEndTime(end);
         return report;
     }
 
@@ -44,17 +45,10 @@ public class ChainReportService  extends AbstractReportService<ChainReport> {
             }
         }
         ChainReport chainReport = merger.getChainReport();
-       for(int i=0;i<10;i++){
-           TransactionChain c = chainReport.findOrCreateChain("transaction_" + i);
-           c.setLevel(1);
-           c.setAvg(10.00);
-           c.setTimeRatio(0.2);
-           c.setDependency(1.0);
-           c.setCallCount(1);
-           c.setSum(100.0);
-       }
         ChainStatisticsComputer visitor = new ChainStatisticsComputer();
         visitor.visitChainReport(chainReport);
+        chainReport.setStartTime(start);
+        chainReport.setEndTime(end);
         return chainReport;
     }
 
@@ -88,6 +82,8 @@ public class ChainReportService  extends AbstractReportService<ChainReport> {
         ChainReport chainReport = merger.getChainReport();
         ChainStatisticsComputer visitor = new ChainStatisticsComputer();
         visitor.visitChainReport(chainReport);
+        chainReport.setStartTime(start);
+        chainReport.setEndTime(end);
         return chainReport;
     }
 

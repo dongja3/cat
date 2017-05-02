@@ -4,6 +4,7 @@ import com.dianping.cat.consumer.chain.ChainAnalyzer;
 import com.dianping.cat.consumer.chain.ChainReportMerger;
 import com.dianping.cat.consumer.chain.model.entity.ChainReport;
 import com.dianping.cat.consumer.chain.model.transform.DefaultSaxParser;
+import com.dianping.cat.helper.TimeHelper;
 import com.dianping.cat.mvc.ApiPayload;
 import com.dianping.cat.report.ReportBucket;
 import com.dianping.cat.report.ReportBucketManager;
@@ -12,6 +13,7 @@ import com.dianping.cat.report.service.ModelPeriod;
 import com.dianping.cat.report.service.ModelRequest;
 import org.unidal.lookup.annotation.Inject;
 
+import java.util.Date;
 import java.util.List;
 
 public class LocalChainService extends LocalModelService<ChainReport> {
@@ -53,7 +55,8 @@ public class LocalChainService extends LocalModelService<ChainReport> {
 	private ChainReport getReportFromLocalDisk(long timestamp, String domain) throws Exception {
 		ChainReport report = new ChainReport(domain);
 		ChainReportMerger  merger = new ChainReportMerger(report);
-
+		report.setStartTime(new Date(timestamp));
+		report.setEndTime(new Date(timestamp + TimeHelper.ONE_HOUR - 1));
 		for (int i = 0; i < ANALYZER_COUNT; i++) {
 			ReportBucket bucket = null;
 			try {

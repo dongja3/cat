@@ -13,18 +13,48 @@
 
 <jsp:body>
 <res:useJs value="${res.js.local['baseGraph.js']}" target="head-js"/>
+<c:if test="${report.transactionChains.size()==0}">
+	<table class='table table-striped table-condensed table-hover '  style="width:100%;">
+		<tr>
+			<th class="left">Transaction</th>
+			<th class="right">Call Count</th>
+			<th class="right">Avg(ms)</th>
+		</tr>
+		<c:forEach var="chain" items="${report.chains.values()}">
+				<tr>
+					<td class="left"><a href="?domain=${chain.domain}&date=${model.date}&name=${chain.transactionName}"> ${chain.transactionName}</a></td>
+					<td class="right"> ${chain.callCount}</td>
+					<td class="right">${w:format(chain.avg,'###,##0.0')}</td>
+				</tr>
+		 </c:forEach>
+	</table>
+</c:if>
 
-<table class="groups">
-	<c:forEach var="chain" items="${report.chains.values()}">
-			<tr class="left">
-            		<th> ${chain.transactionName}</th>
-            		<th> ${chain.callCount}</th>
-            		<th> ${chain.avg}</th>
-            		<th> ${chain.dependency}</th>
-            		<th> ${chain.timeRatio}</th>
-			</tr>
-	 </c:forEach>
-</table>
+<c:if test="${report.transactionChains.size()>0}">
+	<table class='table table-striped table-condensed table-hover '  style="width:100%;">
+		<tr>
+		  <th class="left">Level</th>
+			<th class="left">Transaction</th>
+			<th class="right">Call Count</th>
+			<th class="right">Avg(ms)</th>
+			<th class="right">Dependency</th>
+			<th class="right">Time Cost Ratio</th>
+			<th class="right">Mark</th>
+		</tr>
+		<c:forEach var="chain" items="${report.transactionChains}">
+				<tr>
+					<td class="left"> ${chain.level}</td>
+					<td class="left"> ${chain.transactionName}</td>
+					<td class="right"> ${chain.callCount}</td>
+					<td class="right">${w:format(chain.avg,'###,##0.0')}</td>
+            		<td class="right">${w:format(chain.dependency,'0.00%')}</td>
+            		<td class="right">${w:format(chain.timeRatio,'0.00%')}</td>
+					<td class="right"> ${chain.remark}</td>
+				</tr>
+		 </c:forEach>
+	</table>
+</c:if>
+
 <script type="text/javascript" src="/cat/js/appendHostname.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {

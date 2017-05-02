@@ -48,7 +48,7 @@
 				</li>
 				<li id="Chain_report" >
                 	<a href="/cat/r/chain?domain=${model.domain}&ip=${model.ipAddress}&date=${model.date}&reportType=${payload.reportType}&op=${payload.action.name}">
-                		<i class="menu-icon glyphicon glyphicon-flowchart"></i>
+                		<i class="menu-icon glyphicon glyphicon-eye-open"></i>
                 		<span class="menu-text">Chain</span>
                 	</a>
                 </li>

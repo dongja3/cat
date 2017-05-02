@@ -3,6 +3,7 @@ package com.dianping.cat.report.page.chain;
 import com.dianping.cat.consumer.chain.ChainAnalyzer;
 import com.dianping.cat.consumer.chain.model.entity.ChainReport;
 import com.dianping.cat.consumer.chain.model.entity.TransactionChain;
+import com.dianping.cat.consumer.chain.model.entity.TransactionChain2;
 import com.dianping.cat.mvc.PayloadNormalizer;
 import com.dianping.cat.report.ReportPage;
 import com.dianping.cat.report.page.chain.service.ChainReportService;
@@ -94,18 +95,52 @@ public class Handler implements PageHandler<Context> {
     }
 
     private ChainReport filterReport(String name, ChainReport chainReport){
+        ChainReport filterReport= new ChainReport(chainReport.getDomain());
+        filterReport.setStartTime(chainReport.getStartTime());
+        filterReport.setEndTime(chainReport.getEndTime());
         if(name==null){
-            return chainReport;
+            for(String txnName : chainReport.getChains().keySet()){
+                TransactionChain chain = chainReport.getChains().get(txnName);
+                if(chain.getChildren().size()>0){
+                    filterReport.addChain(chain);
+                }
+            }
+            return filterReport;
         }
-        ChainReport report = new ChainReport(chainReport.getDomain());
         for(TransactionChain chain : chainReport.getChains().values()){
             if(chain.getTransactionName().equals(name)){
-                report.addChain(chain);
+                addChain2(chain,filterReport,chain.getCallCount(),chain.getAvg());
                 break;
             }
         }
-        return report;
+        return filterReport;
     }
+
+    private void addChain2(TransactionChain chain1, ChainReport report,long rootCallCount, double rootAvg){
+        TransactionChain2 chain2 = new TransactionChain2();
+        chain2.setSum(chain1.getSum());
+        chain2.setCallCount(chain1.getCallCount());
+        double dependency = (float) chain1.getCallCount() / (float) rootCallCount;
+        chain2.setDependency(dependency);
+        chain2.setTimeRatio(chain1.getAvg() / rootAvg);
+        if(chain2.getDependency()>0.85){
+            chain2.setRemark("Strong");
+        }
+        StringBuilder sb = new StringBuilder();
+        for(int i=0;i<chain1.getLevel();i++){
+            sb.append("~");
+        }
+        chain2.setDomain(chain1.getDomain());
+        chain2.setAvg(chain1.getSum()/chain1.getCallCount());
+        chain2.setLevel(chain1.getLevel());
+        chain2.setTransactionName(sb.toString()+ chain1.getTransactionName());
+        report.addChain2(chain2);
+        for(TransactionChain child : chain1.getChildren()){
+            addChain2(child,report,rootCallCount,rootAvg);
+        }
+    }
+
+
 
 
     private void normalize(Model model, Payload payload) {

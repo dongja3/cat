@@ -3,7 +3,10 @@
 	enable-base-visitor="true"  enable-native-parser="true"  enable-native-builder="true">
 	<entity name="chain-report" root="true">
 		<attribute name="domain" value-type="String" key="true" />
+		<attribute name="startTime" value-type="Date" format="yyyy-MM-dd HH:mm:ss" />
+		<attribute name="endTime" value-type="Date" format="yyyy-MM-dd HH:mm:ss" />
 		<entity-ref name="chain" type="map" names="chains" method-find-or-create="true" />
+		<entity-ref name="chain2" type="list" names="transactionChains" method-find-or-create="false" />
 	</entity>
 
 	<entity name="chain" class-name="TransactionChain">
@@ -16,6 +19,18 @@
 		<attribute name="dependency" value-type="double" primitive="true" format="0.0000" />
 		<attribute name="timeRatio" value-type="double" primitive="true" format="0.0000" />
 		<entity-ref name="chain" type="list" names="children" method-find-or-create="true" />
+	</entity>
+
+	<entity name="chain2" class-name="TransactionChain2">
+		<attribute name ="level" value-type="int"/>
+		<attribute name="domain" value-type="String" />
+		<attribute name="transactionName" value-type="String" key="true" />
+		<attribute name="callCount" value-type="long" primitive="true" method-inc="true" />
+		<attribute name="avg" value-type="double" primitive="true" format="0.0" />
+		<attribute name="sum" value-type="double" primitive="true" format="0.0" />
+		<attribute name="dependency" value-type="double" primitive="true" format="0.0000" />
+		<attribute name="timeRatio" value-type="double" primitive="true" format="0.0000" />
+		<attribute name="remark" value-type="String" />
 	</entity>
 
 </model>

@@ -95,6 +95,7 @@ public class ChainAnalyzer extends AbstractMessageAnalyzer<ChainReport> implemen
         rootChain.setLevel(0);
         rootChain.setDependency(1);
         rootChain.setTimeRatio(1);
+        rootChain.setDomain(report.getDomain());
 
         List<Message> children = t.getChildren();
         for (Message child : children) {

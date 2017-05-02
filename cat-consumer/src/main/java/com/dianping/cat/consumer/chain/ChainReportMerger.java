@@ -16,6 +16,7 @@ public class ChainReportMerger extends DefaultMerger {
         to.incCallCount(from.getCallCount());
         to.setSum(to.getSum() + from.getSum());
         to.setLevel(from.getLevel());
+        to.setAvg(to.getSum() / to.getCallCount());
     }
 
 

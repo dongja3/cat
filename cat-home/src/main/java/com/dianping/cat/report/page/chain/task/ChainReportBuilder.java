@@ -123,7 +123,9 @@ public class ChainReportBuilder  implements TaskBuilder, LogEnabled {
         ChainReport chainReport = merger.getChainReport();
         ChainStatisticsComputer visitor = new ChainStatisticsComputer();
         visitor.visitChainReport(chainReport);
-       return chainReport;
+        chainReport.setStartTime(start);
+        chainReport.setEndTime(end);
+        return chainReport;
     }
 
 }
