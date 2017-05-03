@@ -10,17 +10,17 @@
 <c:set var="report" value="${model.report}"/>
 
 <a:report title="Chain Report">
-
+<jsp:attribute name="subtitle">${w:format(report.startTime,'yyyy-MM-dd HH:mm:ss')} to ${w:format(report.endTime,'yyyy-MM-dd HH:mm:ss')}</jsp:attribute>
 <jsp:body>
 <res:useJs value="${res.js.local['baseGraph.js']}" target="head-js"/>
 <c:if test="${report.transactionChains.size()==0}">
 	<table class='table table-striped table-condensed table-hover '  style="width:100%;">
 		<tr>
-			<th class="left">Transaction</th>
-			<th class="right">Call Count</th>
-			<th class="right">Avg(ms)</th>
+			<th class="left"><a href="?domain=${model.domain}&date=${model.date}&sort=name">Transaction</a></th>
+			<th class="right"><a href="?domain=${model.domain}&date=${model.date}&sort=calCount">Call Count</a></th>
+			<th class="right"><a href="?domain=${model.domain}&date=${model.date}&sort=avg">Avg(ms)</a></th>
 		</tr>
-		<c:forEach var="chain" items="${report.chains.values()}">
+		<c:forEach var="chain" items="${report.chains}">
 				<tr>
 					<td class="left"><a href="?domain=${chain.domain}&date=${model.date}&name=${chain.transactionName}"> ${chain.transactionName}</a></td>
 					<td class="right"> ${chain.callCount}</td>

@@ -5,7 +5,7 @@
 		<attribute name="domain" value-type="String" key="true" />
 		<attribute name="startTime" value-type="Date" format="yyyy-MM-dd HH:mm:ss" />
 		<attribute name="endTime" value-type="Date" format="yyyy-MM-dd HH:mm:ss" />
-		<entity-ref name="chain" type="map" names="chains" method-find-or-create="true" />
+		<entity-ref name="chain" type="list" names="chains" method-find-or-create="true" />
 		<entity-ref name="chain2" type="list" names="transactionChains" method-find-or-create="false" />
 	</entity>
 

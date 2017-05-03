@@ -16,6 +16,12 @@ public class Payload  extends AbstractReportPayload<Action,ReportPage> {
     @FieldMeta("name")
     private String m_name;
 
+    @FieldMeta("minCallCount")
+    private int m_minCallCount;
+
+    @FieldMeta("sort")
+    private String m_sortBy;
+
     @FieldMeta("xml")
     private boolean m_xml;
 
@@ -34,6 +40,22 @@ public class Payload  extends AbstractReportPayload<Action,ReportPage> {
 
     public void setName(String name) {
         m_name = name;
+    }
+
+    public int getMinCallCount() {
+        return m_minCallCount;
+    }
+
+    public void setMinCallCount(int minCallCount) {
+        this.m_minCallCount = minCallCount;
+    }
+
+    public String getSortBy() {
+        return m_sortBy;
+    }
+
+    public void setSortBy(String sortBy) {
+        this.m_sortBy = sortBy;
     }
 
     @Override

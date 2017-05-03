@@ -18,6 +18,8 @@ import org.unidal.web.mvc.annotation.PayloadMeta;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Created by DONGJA3 on 4/27/2017.
@@ -55,6 +57,7 @@ public class Handler implements PageHandler<Context> {
         String domain = payload.getDomain();
         String name = payload.getName();
         Action action = payload.getAction();
+        String sortBy = payload.getSortBy();
         ChainReport report;
         switch(action){
             case HOURLY_REPORT:
@@ -72,7 +75,14 @@ public class Handler implements PageHandler<Context> {
             default:
                 report = getHourlyReport(payload);
         }
-        report = filterReport(name,report);
+
+        if(report!=null){
+            report = filterReport(name,report,payload.getMinCallCount());
+            if(report.getTransactionChains().size()==0){
+                Collections.sort(report.getChains(), new ChainComparator(sortBy));
+            }
+        }
+
         model.setReport(report);
         if (payload.isXml()) {
             m_xmlViewer.view(ctx, model);
@@ -94,20 +104,19 @@ public class Handler implements PageHandler<Context> {
         }
     }
 
-    private ChainReport filterReport(String name, ChainReport chainReport){
+    private ChainReport filterReport(String name, ChainReport chainReport, int minCallCount){
         ChainReport filterReport= new ChainReport(chainReport.getDomain());
         filterReport.setStartTime(chainReport.getStartTime());
         filterReport.setEndTime(chainReport.getEndTime());
         if(name==null){
-            for(String txnName : chainReport.getChains().keySet()){
-                TransactionChain chain = chainReport.getChains().get(txnName);
-                if(chain.getChildren().size()>0){
+            for(TransactionChain chain : chainReport.getChains()){
+                if(chain.getChildren().size()>0&&chain.getCallCount()>=minCallCount){
                     filterReport.addChain(chain);
                 }
             }
             return filterReport;
         }
-        for(TransactionChain chain : chainReport.getChains().values()){
+        for(TransactionChain chain : chainReport.getChains()){
             if(chain.getTransactionName().equals(name)){
                 addChain2(chain,filterReport,chain.getCallCount(),chain.getSum());
                 break;
@@ -123,12 +132,16 @@ public class Handler implements PageHandler<Context> {
         double dependency = (float) chain1.getCallCount() / (float) rootCallCount;
         chain2.setDependency(dependency);
         chain2.setTimeRatio(chain1.getSum() / rootSum);
+        chain2.setDomain(chain1.getDomain());
+        chain2.setAvg(chain1.getSum()/chain1.getCallCount());
+        chain2.setLevel(chain1.getLevel());
+
         StringBuilder sb = new StringBuilder();
-        if(chain1.getLevel()>0){
+        if(chain2.getLevel()>0){
             if(chain2.getDependency()>0.85){
                 sb.append("[强依赖]");
             }
-            if(chain2.getTimeRatio()>0.5){
+            if(chain2.getTimeRatio()>0.5 && chain2.getAvg()>100){
                 sb.append("[瓶颈]");
             }
         }
@@ -138,9 +151,6 @@ public class Handler implements PageHandler<Context> {
         for(int i=0;i<chain1.getLevel();i++){
             sb.append("~");
         }
-        chain2.setDomain(chain1.getDomain());
-        chain2.setAvg(chain1.getSum()/chain1.getCallCount());
-        chain2.setLevel(chain1.getLevel());
         chain2.setTransactionName(sb.toString()+ chain1.getTransactionName());
         report.addChain2(chain2);
         for(TransactionChain child : chain1.getChildren()){
@@ -155,5 +165,46 @@ public class Handler implements PageHandler<Context> {
         m_normalizePayload.normalize(model, payload);
         model.setPage(ReportPage.CHAIN);
         model.setAction(payload.getAction());
+    }
+
+    public static class ChainComparator implements Comparator<TransactionChain> {
+        private String m_sorted;
+
+        public ChainComparator(String type) {
+            m_sorted = type;
+        }
+        @Override
+        public int compare(TransactionChain o1, TransactionChain o2) {
+            if("name".equalsIgnoreCase(m_sorted)){
+                return o1.getTransactionName().compareTo(o2.getTransactionName());
+            }
+
+            if("calCount".equalsIgnoreCase(m_sorted)){
+                long count2 = o2.getCallCount();
+                long count1 = o1.getCallCount();
+
+                if (count2 > count1) {
+                    return 1;
+                } else if (count2 < count1) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            }
+
+            if("avg".equalsIgnoreCase(m_sorted)){
+                double avg2 = o2.getAvg();
+                double avg1 = o1.getAvg();
+                if (avg2 > avg1) {
+                    return 1;
+                } else if (avg2 < avg1) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            }
+
+            return 0;
+        }
     }
 }
