@@ -33,6 +33,7 @@
 	</entity>
 	<entity name="name" class-name="TransactionName">
 		<attribute name="id" key="true" />
+		<attribute name="rootId" value-type="String" />
 		<attribute name="totalCount" value-type="long" primitive="true" method-inc="true" />
 		<attribute name="failCount" value-type="long" primitive="true" method-inc="true" />
 		<attribute name="failPercent" value-type="double" primitive="true" format="0.00" />

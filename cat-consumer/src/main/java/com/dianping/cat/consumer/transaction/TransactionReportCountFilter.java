@@ -1,16 +1,10 @@
 package com.dianping.cat.consumer.transaction;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import com.dianping.cat.consumer.transaction.model.entity.TransactionName;
 import com.dianping.cat.consumer.transaction.model.entity.TransactionType;
 import com.dianping.cat.consumer.transaction.model.transform.BaseVisitor;
+
+import java.util.*;
 
 public class TransactionReportCountFilter extends BaseVisitor {
 	private int m_maxItems = 400;
@@ -37,6 +31,9 @@ public class TransactionReportCountFilter extends BaseVisitor {
 		}
 		if (old.getFailMessageUrl() == null) {
 			old.setFailMessageUrl(other.getFailMessageUrl());
+		}
+		if(old.getRootId()==null){
+			old.setRootId(other.getRootId());
 		}
 	}
 

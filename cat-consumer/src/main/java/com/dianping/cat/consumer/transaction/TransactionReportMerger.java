@@ -65,6 +65,9 @@ public class TransactionReportMerger extends DefaultMerger {
 		if (old.getFailMessageUrl() == null) {
 			old.setFailMessageUrl(other.getFailMessageUrl());
 		}
+		if(old.getRootId()==null){
+			old.setRootId(other.getRootId());
+		}
 	}
 
 	@Override

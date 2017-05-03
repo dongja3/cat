@@ -125,7 +125,9 @@
 						<c:when test="${status.index > 0}">
 							<td class="left longText" style="white-space:normal">
 							<a href="?op=graphs&domain=${report.domain}&date=${model.date}&ip=${model.ipAddress}&type=${payload.encodedType}&name=${item.name}" class="graph_link" data-status="${status.index}">[:: show ::]</a> 
-							&nbsp;&nbsp;${w:shorten(e.id, 120)}</td>
+							&nbsp;${w:shorten(e.id, 120)}
+							&nbsp;<a href="./chain?domain=${report.domain}&date=${model.date}&name=${e.rootId}">[chain]</a>
+							</td>
 						</c:when>
 						<c:otherwise>
 							<td class="center" style="white-space:normal">${w:shorten(e.id, 120)}</td>

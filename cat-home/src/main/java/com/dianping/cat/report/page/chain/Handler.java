@@ -109,24 +109,32 @@ public class Handler implements PageHandler<Context> {
         }
         for(TransactionChain chain : chainReport.getChains().values()){
             if(chain.getTransactionName().equals(name)){
-                addChain2(chain,filterReport,chain.getCallCount(),chain.getAvg());
+                addChain2(chain,filterReport,chain.getCallCount(),chain.getSum());
                 break;
             }
         }
         return filterReport;
     }
 
-    private void addChain2(TransactionChain chain1, ChainReport report,long rootCallCount, double rootAvg){
+    private void addChain2(TransactionChain chain1, ChainReport report,long rootCallCount, double rootSum){
         TransactionChain2 chain2 = new TransactionChain2();
         chain2.setSum(chain1.getSum());
         chain2.setCallCount(chain1.getCallCount());
         double dependency = (float) chain1.getCallCount() / (float) rootCallCount;
         chain2.setDependency(dependency);
-        chain2.setTimeRatio(chain1.getAvg() / rootAvg);
-        if(chain2.getDependency()>0.85){
-            chain2.setRemark("Strong");
-        }
+        chain2.setTimeRatio(chain1.getSum() / rootSum);
         StringBuilder sb = new StringBuilder();
+        if(chain1.getLevel()>0){
+            if(chain2.getDependency()>0.85){
+                sb.append("[强依赖]");
+            }
+            if(chain2.getTimeRatio()>0.5){
+                sb.append("[瓶颈]");
+            }
+        }
+        chain2.setRemark(sb.toString());
+
+        sb = new StringBuilder();
         for(int i=0;i<chain1.getLevel();i++){
             sb.append("~");
         }
@@ -136,7 +144,7 @@ public class Handler implements PageHandler<Context> {
         chain2.setTransactionName(sb.toString()+ chain1.getTransactionName());
         report.addChain2(chain2);
         for(TransactionChain child : chain1.getChildren()){
-            addChain2(child,report,rootCallCount,rootAvg);
+            addChain2(child,report,rootCallCount,rootSum);
         }
     }
 

@@ -1,31 +1,25 @@
 package com.dianping.cat.consumer.transaction;
 
-import java.util.ConcurrentModificationException;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import com.dianping.cat.Cat;
+import com.dianping.cat.Constants;
+import com.dianping.cat.analysis.AbstractMessageAnalyzer;
+import com.dianping.cat.config.server.ServerFilterConfigManager;
+import com.dianping.cat.consumer.transaction.model.entity.*;
+import com.dianping.cat.message.Event;
+import com.dianping.cat.message.Message;
+import com.dianping.cat.message.Transaction;
+import com.dianping.cat.message.spi.MessageTree;
+import com.dianping.cat.report.DefaultReportManager.StoragePolicy;
+import com.dianping.cat.report.ReportManager;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
 import org.unidal.lookup.annotation.Inject;
 import org.unidal.tuple.Pair;
 
-import com.dianping.cat.Cat;
-import com.dianping.cat.Constants;
-import com.dianping.cat.analysis.AbstractMessageAnalyzer;
-import com.dianping.cat.config.server.ServerFilterConfigManager;
-import com.dianping.cat.consumer.transaction.model.entity.Duration;
-import com.dianping.cat.consumer.transaction.model.entity.Range;
-import com.dianping.cat.consumer.transaction.model.entity.Range2;
-import com.dianping.cat.consumer.transaction.model.entity.TransactionName;
-import com.dianping.cat.consumer.transaction.model.entity.TransactionReport;
-import com.dianping.cat.consumer.transaction.model.entity.TransactionType;
-import com.dianping.cat.message.Event;
-import com.dianping.cat.message.Message;
-import com.dianping.cat.message.Transaction;
-import com.dianping.cat.message.spi.MessageTree;
-import com.dianping.cat.report.ReportManager;
-import com.dianping.cat.report.DefaultReportManager.StoragePolicy;
+import java.util.ConcurrentModificationException;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class TransactionAnalyzer extends AbstractMessageAnalyzer<TransactionReport> implements LogEnabled {
 
@@ -154,7 +148,7 @@ public class TransactionAnalyzer extends AbstractMessageAnalyzer<TransactionRepo
 		if (message instanceof Transaction) {
 			Transaction root = (Transaction) message;
 
-			processTransaction(report, tree, root);
+			processTransaction(report, tree, root, root.getName());
 		}
 	}
 
@@ -185,7 +179,7 @@ public class TransactionAnalyzer extends AbstractMessageAnalyzer<TransactionRepo
 		range.setSum(range.getSum() + d);
 	}
 
-	protected void processTransaction(TransactionReport report, MessageTree tree, Transaction t) {
+	protected void processTransaction(TransactionReport report, MessageTree tree, Transaction t, String rootTxnName) {
 		String type = t.getType();
 		String name = t.getName();
 
@@ -198,6 +192,7 @@ public class TransactionAnalyzer extends AbstractMessageAnalyzer<TransactionRepo
 				String ip = tree.getIpAddress();
 				TransactionType transactionType = report.findOrCreateMachine(ip).findOrCreateType(type);
 				TransactionName transactionName = transactionType.findOrCreateName(name);
+				transactionName.setRootId(rootTxnName);
 				String messageId = tree.getMessageId();
 
 				processTypeAndName(t, transactionType, transactionName, messageId, pair.getValue().doubleValue() / 1000d);
@@ -207,7 +202,7 @@ public class TransactionAnalyzer extends AbstractMessageAnalyzer<TransactionRepo
 
 			for (Message child : children) {
 				if (child instanceof Transaction) {
-					processTransaction(report, tree, (Transaction) child);
+					processTransaction(report, tree, (Transaction) child, rootTxnName);
 				}
 			}
 		}
