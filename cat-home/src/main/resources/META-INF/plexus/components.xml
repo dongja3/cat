@@ -1209,6 +1209,16 @@
 		</component>
 		<component>
 			<role>com.dianping.cat.report.task.TaskBuilder</role>
+			<role-hint>chain</role-hint>
+			<implementation>com.dianping.cat.report.page.chain.task.ChainReportBuilder</implementation>
+			<requirements>
+				<requirement>
+					<role>com.dianping.cat.report.page.chain.service.ChainReportService</role>
+				</requirement>
+			</requirements>
+		</component>
+		<component>
+			<role>com.dianping.cat.report.task.TaskBuilder</role>
 			<role-hint>event</role-hint>
 			<implementation>com.dianping.cat.report.page.event.task.EventReportBuilder</implementation>
 			<requirements>
@@ -1217,9 +1227,6 @@
 				</requirement>
 				<requirement>
 					<role>com.dianping.cat.core.dal.DailyGraphDao</role>
-				</requirement>
-				<requirement>
-					<role>com.dianping.cat.report.page.event.service.EventReportService</role>
 				</requirement>
 				<requirement>
 					<role>com.dianping.cat.report.page.event.service.EventReportService</role>

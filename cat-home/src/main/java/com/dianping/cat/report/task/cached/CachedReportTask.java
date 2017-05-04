@@ -1,13 +1,8 @@
 package com.dianping.cat.report.task.cached;
 
-import java.util.Date;
-import java.util.Set;
-
-import org.unidal.helper.Threads.Task;
-import org.unidal.lookup.annotation.Inject;
-
 import com.dianping.cat.Cat;
 import com.dianping.cat.config.server.ServerFilterConfigManager;
+import com.dianping.cat.consumer.chain.ChainAnalyzer;
 import com.dianping.cat.consumer.cross.CrossAnalyzer;
 import com.dianping.cat.consumer.event.EventAnalyzer;
 import com.dianping.cat.consumer.matrix.MatrixAnalyzer;
@@ -15,12 +10,18 @@ import com.dianping.cat.consumer.problem.ProblemAnalyzer;
 import com.dianping.cat.consumer.transaction.TransactionAnalyzer;
 import com.dianping.cat.helper.TimeHelper;
 import com.dianping.cat.message.Transaction;
+import com.dianping.cat.report.page.chain.task.ChainReportBuilder;
 import com.dianping.cat.report.page.cross.task.CrossReportBuilder;
 import com.dianping.cat.report.page.event.task.EventReportBuilder;
 import com.dianping.cat.report.page.matrix.task.MatrixReportBuilder;
 import com.dianping.cat.report.page.problem.task.ProblemReportBuilder;
 import com.dianping.cat.report.page.transaction.service.TransactionReportService;
 import com.dianping.cat.report.page.transaction.task.TransactionReportBuilder;
+import org.unidal.helper.Threads.Task;
+import org.unidal.lookup.annotation.Inject;
+
+import java.util.Date;
+import java.util.Set;
 
 public class CachedReportTask implements Task {
 
@@ -32,6 +33,9 @@ public class CachedReportTask implements Task {
 
 	@Inject
 	private TransactionReportBuilder m_transactionReportBuilder;
+
+	@Inject
+	private ChainReportBuilder m_chainReportBuilder;
 
 	@Inject
 	private EventReportBuilder m_eventReportBuilder;
@@ -64,6 +68,7 @@ public class CachedReportTask implements Task {
 				m_problemReportBuilder.buildMonthlyTask(ProblemAnalyzer.ID, domain, start);
 				m_crossReportBuilder.buildMonthlyTask(CrossAnalyzer.ID, domain, start);
 				m_matrixReportBuilder.buildMonthlyTask(MatrixAnalyzer.ID, domain, start);
+				m_chainReportBuilder.buildMonthlyTask(ChainAnalyzer.ID,domain,start);
 
 				t.setStatus(Transaction.SUCCESS);
 				t.complete();
@@ -85,6 +90,7 @@ public class CachedReportTask implements Task {
 				m_problemReportBuilder.buildWeeklyTask(ProblemAnalyzer.ID, domain, start);
 				m_crossReportBuilder.buildWeeklyTask(CrossAnalyzer.ID, domain, start);
 				m_matrixReportBuilder.buildWeeklyTask(MatrixAnalyzer.ID, domain, start);
+				m_chainReportBuilder.buildWeeklyTask(ChainAnalyzer.ID, domain, start);
 
 				t.setStatus(Transaction.SUCCESS);
 				t.complete();

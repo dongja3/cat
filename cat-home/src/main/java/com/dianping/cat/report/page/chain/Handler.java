@@ -149,7 +149,7 @@ public class Handler implements PageHandler<Context> {
 
         sb = new StringBuilder();
         for(int i=0;i<chain1.getLevel();i++){
-            sb.append("~");
+            sb.append("&nbsp;&nbsp;&nbsp;&nbsp;");
         }
         chain2.setTransactionName(sb.toString()+ chain1.getTransactionName());
         report.addChain2(chain2);

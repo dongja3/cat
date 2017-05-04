@@ -20,7 +20,7 @@ public class ChainStatisticsComputer extends BaseVisitor {
 
     @Override
     public void visitChainReport(ChainReport chainReport) {
-        for (TransactionChain transactionChain : chainReport.getChains().values()) {
+        for (TransactionChain transactionChain : chainReport.getChains()) {
             visitChain(transactionChain,transactionChain.getCallCount(), transactionChain.getSum());
         }
     }
