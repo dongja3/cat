@@ -102,7 +102,7 @@
 		</tr>
 		<c:forEach var="chain" items="${report.chains}">
 				<tr>
-					<td class="left"><a href="?domain=${chain.domain}&date=${model.date}&name=${chain.transactionName}"> ${chain.transactionName}</a></td>
+					<td class="left"><a href="?domain=${model.domain}&date=${model.date}&name=${chain.transactionName}"> ${chain.transactionName}</a></td>
 					<td class="right"> ${chain.callCount}</td>
 					<td class="right">${w:format(chain.avg,'###,##0.0')}</td>
 				</tr>

@@ -1232,6 +1232,9 @@
 					<role>com.dianping.cat.report.page.event.service.EventReportService</role>
 				</requirement>
 				<requirement>
+					<role>com.dianping.cat.report.page.event.service.EventReportService</role>
+				</requirement>
+				<requirement>
 					<role>com.dianping.cat.report.page.event.task.EventGraphCreator</role>
 				</requirement>
 				<requirement>
