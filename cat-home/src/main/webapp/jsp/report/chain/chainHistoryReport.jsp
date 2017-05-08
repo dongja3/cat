@@ -10,8 +10,8 @@
 <jsp:useBean id="model"	type="com.dianping.cat.report.page.chain.Model" scope="request" />
 <c:set var="report" value="${model.report}"/>
 
-<a:report title="Chain Report">
-<jsp:attribute name="subtitle">${w:format(report.startTime,'yyyy-MM-dd HH:mm:ss')} to ${w:format(report.endTime,'yyyy-MM-dd HH:mm:ss')}</jsp:attribute>
+<a:historyReport title="History Report">
+	<jsp:attribute name="subtitle">${w:format(payload.historyStartDate,'yyyy-MM-dd HH:mm:ss')} to ${w:format(payload.historyDisplayEndDate,'yyyy-MM-dd HH:mm:ss')}</jsp:attribute>
 <jsp:body>
 <res:useJs value="${res.js.local['baseGraph.js']}" target="head-js"/>
 
@@ -23,70 +23,70 @@
 		<th>
 				&nbsp;[<c:choose>
 				<c:when test="${payload.minCallCount<=0}">
-					<a href="?domain=${model.domain}&date=${model.date}&minCallCount=0"class="current">ALL</a>
+					<a href="?op=history&domain=${model.domain}&date=${model.date}&minCallCount=0"class="current">ALL</a>
 				</c:when>
 				<c:otherwise>
-						<a href="?domain=${model.domain}&date=${model.date}&minCallCount=0">ALL</a>
+						<a href="?op=history&domain=${model.domain}&date=${model.date}&minCallCount=0">ALL</a>
 				</c:otherwise>
 			</c:choose>]&nbsp;
 		</th>
 		<th>
 				&nbsp;[<c:choose>
 				<c:when test="${payload.minCallCount==1}">
-					<a href="?domain=${model.domain}&date=${model.date}&minCallCount=1"class="current">1</a>
+					<a href="?op=history&domain=${model.domain}&date=${model.date}&minCallCount=1"class="current">1</a>
 				</c:when>
 				<c:otherwise>
-						<a href="?domain=${model.domain}&date=${model.date}&minCallCount=1">1</a>
+						<a href="?op=history&domain=${model.domain}&date=${model.date}&minCallCount=1">1</a>
 				</c:otherwise>
 			</c:choose>]&nbsp;
 		</th>
 		<th>
 				&nbsp;[<c:choose>
 				<c:when test="${payload.minCallCount==5}">
-					<a href="?domain=${model.domain}&date=${model.date}&minCallCount=5"class="current">5</a>
+					<a href="?op=history&domain=${model.domain}&date=${model.date}&minCallCount=5"class="current">5</a>
 				</c:when>
 				<c:otherwise>
-						<a href="?domain=${model.domain}&date=${model.date}&minCallCount=5">5</a>
+						<a href="?op=history&domain=${model.domain}&date=${model.date}&minCallCount=5">5</a>
 				</c:otherwise>
 			</c:choose>]&nbsp;
 		</th>
 		<th>
 				&nbsp;[<c:choose>
 				<c:when test="${payload.minCallCount==10}">
-					<a href="?domain=${model.domain}&date=${model.date}&minCallCount=10"class="current">10</a>
+					<a href="?op=history&domain=${model.domain}&date=${model.date}&minCallCount=10"class="current">10</a>
 				</c:when>
 				<c:otherwise>
-						<a href="?domain=${model.domain}&date=${model.date}&minCallCount=10">10</a>
+						<a href="?op=history&domain=${model.domain}&date=${model.date}&minCallCount=10">10</a>
 				</c:otherwise>
 			</c:choose>]&nbsp;
 		</th>
 		<th>
 				&nbsp;[<c:choose>
 				<c:when test="${payload.minCallCount==20}">
-					<a href="?domain=${model.domain}&date=${model.date}&minCallCount=20"class="current">20</a>
+					<a href="?op=history&domain=${model.domain}&date=${model.date}&minCallCount=20"class="current">20</a>
 				</c:when>
 				<c:otherwise>
-						<a href="?domain=${model.domain}&date=${model.date}&minCallCount=20">20</a>
+						<a href="?op=history&domain=${model.domain}&date=${model.date}&minCallCount=20">20</a>
 				</c:otherwise>
 			</c:choose>]&nbsp;
 		</th>
 		<th>
 				&nbsp;[<c:choose>
 				<c:when test="${payload.minCallCount==50}">
-					<a href="?domain=${model.domain}&date=${model.date}&minCallCount=50"class="current">50</a>
+					<a href="?op=history&domain=${model.domain}&date=${model.date}&minCallCount=50"class="current">50</a>
 				</c:when>
 				<c:otherwise>
-						<a href="?domain=${model.domain}&date=${model.date}&minCallCount=50">50</a>
+						<a href="?op=history&domain=${model.domain}&date=${model.date}&minCallCount=50">50</a>
 				</c:otherwise>
 			</c:choose>]&nbsp;
 		</th>
 		<th>
 				&nbsp;[<c:choose>
 				<c:when test="${payload.minCallCount==100}">
-					<a href="?domain=${model.domain}&date=${model.date}&minCallCount=100"class="current">100</a>
+					<a href="?op=history&domain=${model.domain}&date=${model.date}&minCallCount=100"class="current">100</a>
 				</c:when>
 				<c:otherwise>
-						<a href="?domain=${model.domain}&date=${model.date}&minCallCount=100">100</a>
+						<a href="?op=history&domain=${model.domain}&date=${model.date}&minCallCount=100">100</a>
 				</c:otherwise>
 			</c:choose>]&nbsp;
 		</th>
@@ -96,13 +96,13 @@
 <c:if test="${report.transactionChains.size()==0}">
 	<table class='table table-striped table-condensed table-hover '  style="width:100%;">
 		<tr>
-			<th class="left"><a href="?domain=${model.domain}&date=${model.date}&sort=name">Transaction</a></th>
-			<th class="right"><a href="?domain=${model.domain}&date=${model.date}&sort=calCount">Call Count</a></th>
-			<th class="right"><a href="?domain=${model.domain}&date=${model.date}&sort=avg">Avg(ms)</a></th>
+			<th class="left"><a href="?op=history&domain=${model.domain}&date=${model.date}&sort=name">Transaction</a></th>
+			<th class="right"><a href="?op=history&domain=${model.domain}&date=${model.date}&sort=calCount">Call Count</a></th>
+			<th class="right"><a href="?op=history&domain=${model.domain}&date=${model.date}&sort=avg">Avg(ms)</a></th>
 		</tr>
 		<c:forEach var="chain" items="${report.chains}">
 				<tr>
-					<td class="left"><a href="?domain=${model.domain}&date=${model.date}&name=${chain.transactionName}"> ${chain.transactionName}</a></td>
+					<td class="left"><a href="?op=history&domain=${model.domain}&date=${model.date}&name=${chain.transactionName}"> ${chain.transactionName}</a></td>
 					<td class="right"> ${chain.callCount}</td>
 					<td class="right">${w:format(chain.avg,'###,##0.0')}</td>
 				</tr>
@@ -146,4 +146,4 @@
 <font color="white">${lastIndex}</font>
 <res:useJs value="${res.js.local.transaction_js}" target="bottom-js" />
 </jsp:body>
-</a:report>
+</a:historyReport>
