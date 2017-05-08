@@ -79,7 +79,7 @@
 		<div class="nav-search nav" id="nav-search">
 			<span class="text-danger switch">【<a class="switch" href="${model.baseUri}?op=history&type=${payload.type}&domain=${model.domain}&id=${payload.id}&ip=${model.ipAddress}"><span class="text-danger">切到历史模式</span></a>】</span>
 			<c:forEach var="nav" items="${model.navs}">
-					&nbsp;[ <a href="${model.baseUri}?&domain=${model.domain}&date=${model.date}&ip=${model.ipAddress}&step=${nav.hours}&${navUrlPrefix}">${nav.title}</a> ]
+					&nbsp;[ <a href="${model.baseUri}?date=${model.date}&ip=${model.ipAddress}&step=${nav.hours}&${navUrlPrefix}">${nav.title}</a> ]
 				</c:forEach>
 				&nbsp;[ <a href="${model.baseUri}?${navUrlPrefix}&domain=${model.domain}">now</a> ]&nbsp;
 		</div><!-- /.nav-search -->

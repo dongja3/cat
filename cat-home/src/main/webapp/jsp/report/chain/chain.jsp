@@ -10,7 +10,7 @@
 <jsp:useBean id="model"	type="com.dianping.cat.report.page.chain.Model" scope="request" />
 <c:set var="report" value="${model.report}"/>
 
-<a:report title="Chain Report">
+<a:report title="Chain Report" navUrlPrefix="domain=${model.domain}" timestamp="${w:format(model.creatTime,'yyyy-MM-dd HH:mm:ss')}">
 <jsp:attribute name="subtitle">${w:format(report.startTime,'yyyy-MM-dd HH:mm:ss')} to ${w:format(report.endTime,'yyyy-MM-dd HH:mm:ss')}</jsp:attribute>
 <jsp:body>
 <res:useJs value="${res.js.local['baseGraph.js']}" target="head-js"/>
