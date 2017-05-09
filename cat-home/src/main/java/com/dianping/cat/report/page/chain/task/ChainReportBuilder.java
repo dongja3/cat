@@ -117,7 +117,7 @@ public class ChainReportBuilder  implements TaskBuilder, LogEnabled {
         long endTime = end.getTime();
         ChainReportMerger merger = new ChainReportMerger(new ChainReport(domain));
         for (; startTime < endTime; startTime = startTime + loopTimeSpan) {
-            ChainReport report = m_reportService.queryReport(domain, new Date(startTime), new Date(startTime + TimeHelper.ONE_DAY));
+            ChainReport report = m_reportService.queryReport(domain, new Date(startTime), new Date(startTime + loopTimeSpan));
             report.accept(merger);
         }
         ChainReport chainReport = merger.getChainReport();
