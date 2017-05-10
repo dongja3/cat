@@ -1,21 +1,5 @@
 package com.dianping.cat.servlet;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.unidal.helper.Joiners;
-import org.unidal.helper.Joiners.IBuilder;
-
 import com.dianping.cat.Cat;
 import com.dianping.cat.CatConstants;
 import com.dianping.cat.configuration.client.entity.Server;
@@ -23,6 +7,15 @@ import com.dianping.cat.message.Message;
 import com.dianping.cat.message.Transaction;
 import com.dianping.cat.message.internal.DefaultMessageManager;
 import com.dianping.cat.message.internal.DefaultTransaction;
+import org.unidal.helper.Joiners;
+import org.unidal.helper.Joiners.IBuilder;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CatFilter implements Filter {
 
@@ -188,6 +181,7 @@ public class CatFilter implements Filter {
 			}
 
 			private void customizeUri(Transaction t, HttpServletRequest req) {
+
 				if (t instanceof DefaultTransaction) {
 					Object catPageType = req.getAttribute(CatConstants.CAT_PAGE_TYPE);
 
@@ -201,13 +195,17 @@ public class CatFilter implements Filter {
 						((DefaultTransaction) t).setName(catPageUri.toString());
 					}
 				}
+
 			}
 
 			private String getRequestURI(HttpServletRequest req) {
 				String url = req.getRequestURI();
 				int length = url.length();
+				String headerUri = req.getHeader("cat_url");
+				if(headerUri!=null){
+					return headerUri;
+				}
 				StringBuilder sb = new StringBuilder(length);
-
 				for (int index = 0; index < length;) {
 					char c = url.charAt(index);
 
@@ -260,8 +258,9 @@ public class CatFilter implements Filter {
 			@Override
 			public void handle(Context ctx) throws IOException, ServletException {
 				HttpServletRequest req = ctx.getRequest();
-				Transaction t = Cat.newTransaction(ctx.getType(), getRequestURI(req));
 
+				Transaction t = Cat.newTransaction(ctx.getType(), getRequestURI(req));
+				System.out.println("Type:" + ctx.getType()+ "   " + t.getClass());
 				try {
 					ctx.handle();
 					customizeStatus(t, req);
