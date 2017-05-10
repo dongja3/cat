@@ -258,9 +258,7 @@ public class CatFilter implements Filter {
 			@Override
 			public void handle(Context ctx) throws IOException, ServletException {
 				HttpServletRequest req = ctx.getRequest();
-
 				Transaction t = Cat.newTransaction(ctx.getType(), getRequestURI(req));
-				System.out.println("Type:" + ctx.getType()+ "   " + t.getClass());
 				try {
 					ctx.handle();
 					customizeStatus(t, req);
