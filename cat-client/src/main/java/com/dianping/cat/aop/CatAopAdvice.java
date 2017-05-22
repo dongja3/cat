@@ -10,9 +10,10 @@ import java.lang.reflect.Method;
 
 public class CatAopAdvice {
     /**
+     * 切面注解方式埋点 实现以切面方式快速对系统进行埋点:
      <bean id="catAopAdvice" class="com.dianping.cat.aop.CatAopAdvice" />
      <aop:config>
-     <aop:aspectref="catAopAdvice">
+     <aop:aspect ref="catAopAdvice">
      <aop:pointcutid="catAroundMethod"expression="execution(* com.springinaction.springidol.Performer.perform(..))"/>
      <aop:around pointcut-ref="catAroundMethod" method="aroundMethod"/>
      </aop:aspect>
@@ -35,9 +36,10 @@ public class CatAopAdvice {
     }
 
     /**
+     * 监控EclipseLink SQL 通过AOP 获得SQL 的Call Method
      <bean id="catAopAdvice" class="com.dianping.cat.aop.CatAopAdvice" />
      <aop:config>
-     <aop:aspectref="catAopAdvice">
+     <aop:aspect ref="catAopAdvice">
      <aop:pointcutid="catAroundSqlCallMethod"expression="execution(* com.springinaction.springidol.Performer.perform(..))"/>
      <aop:around pointcut-ref="catAroundSqlCallMethod" method="aroundSqlCallMethod()"/>
      </aop:aspect>
@@ -46,7 +48,7 @@ public class CatAopAdvice {
     public void aroundSqlCallMethod(ProceedingJoinPoint pjp) {
         MethodSignature joinPointObject = (MethodSignature) pjp.getSignature();
         Method method = joinPointObject.getMethod();
-        Transaction t = Cat.newTransaction("JpaQuery", getMethodName(method));
+        Transaction t = Cat.newTransaction("jpaQuery", getMethodName(method));
         try {
             pjp.proceed();
             t.setStatus(Transaction.SUCCESS);
