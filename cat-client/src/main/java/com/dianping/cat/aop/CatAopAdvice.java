@@ -1,7 +1,6 @@
 package com.dianping.cat.aop;
 
 import com.dianping.cat.Cat;
-import com.dianping.cat.eclipselink.SqlTransactionContext;
 import com.dianping.cat.message.Transaction;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -39,15 +38,24 @@ public class CatAopAdvice {
      <bean id="catAopAdvice" class="com.dianping.cat.aop.CatAopAroundAdvice" />
      <aop:config>
      <aop:aspectref="catAopAdvice">
-     <aop:pointcutid="sqlCallMethod"expression="execution(* com.springinaction.springidol.Performer.perform(..))"/>
-     <aop:before pointcut-ref="sqlCallMethod" method="beforeSqlCall()"/>
+     <aop:pointcutid="catAroundSqlCallMethod"expression="execution(* com.springinaction.springidol.Performer.perform(..))"/>
+     <aop:around pointcut-ref="catAroundSqlCallMethod" method="aroundSqlCallMethod()"/>
      </aop:aspect>
      </aop:config>
      * */
-    public void beforeSqlCall(ProceedingJoinPoint pjp) {
+    public void aroundSqlCallMethod(ProceedingJoinPoint pjp) {
         MethodSignature joinPointObject = (MethodSignature) pjp.getSignature();
         Method method = joinPointObject.getMethod();
-        SqlTransactionContext.setCallMethod(getMethodName(method));
+        Transaction t = Cat.newTransaction("JpaQuery", getMethodName(method));
+        try {
+            pjp.proceed();
+            t.setStatus(Transaction.SUCCESS);
+        } catch (Throwable e) {
+            t.setStatus(e);
+            Cat.logError(e);
+        } finally {
+            t.complete();
+        }
     }
 
     private String getMethodName(Method method){

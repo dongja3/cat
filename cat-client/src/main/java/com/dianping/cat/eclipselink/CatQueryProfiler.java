@@ -17,7 +17,7 @@ class CatQueryProfiler extends PerformanceProfiler {
     @Override
     public Object profileExecutionOfQuery(DatabaseQuery query, Record row, AbstractSession session) {
         Object result = session.internalExecuteQuery(query, (AbstractRecord) row);
-        Transaction t = SqlTransactionContext.getTransaction();
+        Transaction t = CalSqlTransactionContext.getTransaction();
         if(t==null){
             return result;
         }

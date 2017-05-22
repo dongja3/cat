@@ -13,7 +13,7 @@ public class TestBookDelete extends EclipseLinkJPATest {
     }
 
     public void testDelete() throws Exception {
-        SqlTransactionContext.setCallMethod("testDelete");
+        CalSqlTransactionContext.setCallMethod("testDelete");
         EntityManager em = getEMF().createEntityManager();
 
         Query q = em.createQuery("select t from Author t");

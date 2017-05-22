@@ -10,7 +10,7 @@ import java.util.List;
 public class TestBookUpdate extends EclipseLinkJPATest{
     @Test
     public void testupdateBook () throws Exception{
-        SqlTransactionContext.setCallMethod("testbookUpdate");
+        CalSqlTransactionContext.setCallMethod("testbookUpdate");
         for(int i=0;i<1;i++){
             EntityManager em = getEMF().createEntityManager();
             Query q = em.createQuery("select t from Author t");

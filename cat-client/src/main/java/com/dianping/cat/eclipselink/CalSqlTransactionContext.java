@@ -5,7 +5,7 @@ import com.dianping.cat.message.Transaction;
 /**
  * Created by DONGJA3 on 5/19/2017.
  */
-public class SqlTransactionContext {
+public class CalSqlTransactionContext {
     private  static ThreadLocal<Transaction> sqlTransaction=new ThreadLocal<Transaction>();
     private  static ThreadLocal<String> callMethod = new ThreadLocal<String>();
 

@@ -15,7 +15,7 @@ public class TestBookInsert extends EclipseLinkJPATest {
 
 
 	public void testbook() throws Exception {
-		SqlTransactionContext.setCallMethod("testbookInsert");
+		CalSqlTransactionContext.setCallMethod("testbookInsert");
 		EntityManager em = getEMF().createEntityManager();
 		em.getTransaction().begin();
 		Author author1 = new Author();

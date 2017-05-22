@@ -19,14 +19,16 @@ public class CatSessionEventAdapter extends SessionEventAdapter implements LogEn
 
     @Override
     public void postAcquireClientSession(SessionEvent event) {
-        Transaction t = SqlTransactionContext.getTransaction();
-        if(t!=null){
-            SqlTransactionContext.clear();
-            m_logger.warn(" SqlTransactionContext  not cleared");
+        String callMethod = CalSqlTransactionContext.getCallMethod();
+        Transaction t =null;
+        if(callMethod!=null){
+            t = Cat.newTransaction("JpaQuery", callMethod);
+            CalSqlTransactionContext.setSqlTransaction(t);
+        }else{
+            t = CalSqlTransactionContext.getTransaction();
         }
+
         Session session = event.getSession();
-        t = Cat.newTransaction("JpaQuery", SqlTransactionContext.getCallMethod());
-        SqlTransactionContext.setSqlTransaction(t);
         if (session instanceof ClientSession) {
             PerformanceProfiler pp = new CatQueryProfiler();
             event.getSession().setProfiler(pp);
@@ -35,28 +37,36 @@ public class CatSessionEventAdapter extends SessionEventAdapter implements LogEn
     }
     @Override
     public void postReleaseClientSession (SessionEvent event) {
-        completeCatTransaction();
+        completeCatTransaction(false);
     }
     @Override
     public void postRollbackTransaction (SessionEvent event) {
-        completeCatTransaction();
+        completeCatTransaction(true);
     }
 
     public void postCommitUnitOfWork(SessionEvent event){
-        completeCatTransaction();
+        completeCatTransaction(false);
     }
-    private void completeCatTransaction(){
-        Transaction t = SqlTransactionContext.getTransaction();
+    private void completeCatTransaction(boolean isRollback){
+        if(null== CalSqlTransactionContext.getCallMethod()){
+            return;
+        }
+        Transaction t = CalSqlTransactionContext.getTransaction();
         if(t==null){
             return;
         }
         if(t.isCompleted()){
-            SqlTransactionContext.clear();
+            CalSqlTransactionContext.clear();
             return;
         }
-        t.setStatus(Transaction.SUCCESS);
+        if(isRollback){
+            t.setStatus(new Exception("rollback"));
+        }else{
+            t.setStatus(Transaction.SUCCESS);
+        }
+
         t.complete();
-        SqlTransactionContext.clear();
+        CalSqlTransactionContext.clear();
     }
 
 
