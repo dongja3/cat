@@ -21,7 +21,7 @@
 	</consumer>
 
 	<console default-domain="Cat" show-cat-domain="true">
-		<remote-servers>127.0.0.1:2281</remote-servers>
+		<remote-servers>127.0.0.1:2280</remote-servers>
 	</console>
 
 	<!-- 

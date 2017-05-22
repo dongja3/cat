@@ -39,6 +39,19 @@
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.eclipse.persistence</groupId>
+			<artifactId>eclipselink</artifactId>
+			<version>2.6.3</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>WLS</groupId>
+			<artifactId>ojdbc5</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>C:/oracle/Middleware/wlserver_10.3/server\ext\jdbc\oracle\11g/ojdbc5.jar</systemPath>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
