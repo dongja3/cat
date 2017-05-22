@@ -22,7 +22,8 @@ public class CatAopAdvice {
     public void aroundMethod(ProceedingJoinPoint pjp) {
         MethodSignature joinPointObject = (MethodSignature) pjp.getSignature();
         Method method = joinPointObject.getMethod();
-        Transaction t = Cat.newTransaction("method", method.getName());
+
+        Transaction t = Cat.newTransaction("method", getMethodName(method) );
         try {
             pjp.proceed();
             t.setStatus(Transaction.SUCCESS);
@@ -46,6 +47,10 @@ public class CatAopAdvice {
     public void beforeSqlCall(ProceedingJoinPoint pjp) {
         MethodSignature joinPointObject = (MethodSignature) pjp.getSignature();
         Method method = joinPointObject.getMethod();
-        SqlTransactionContext.setCallMethod(method.getName());
+        SqlTransactionContext.setCallMethod(getMethodName(method));
+    }
+
+    private String getMethodName(Method method){
+        return method.getDeclaringClass().getSimpleName() +"."+ method.getName();
     }
 }
