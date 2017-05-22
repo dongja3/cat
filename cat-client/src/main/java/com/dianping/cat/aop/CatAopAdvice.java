@@ -10,7 +10,7 @@ import java.lang.reflect.Method;
 
 public class CatAopAdvice {
     /**
-     <bean id="catAopAdvice" class="com.dianping.cat.aop.CatAopAroundAdvice" />
+     <bean id="catAopAdvice" class="com.dianping.cat.aop.CatAopAdvice" />
      <aop:config>
      <aop:aspectref="catAopAdvice">
      <aop:pointcutid="catAroundMethod"expression="execution(* com.springinaction.springidol.Performer.perform(..))"/>
@@ -35,7 +35,7 @@ public class CatAopAdvice {
     }
 
     /**
-     <bean id="catAopAdvice" class="com.dianping.cat.aop.CatAopAroundAdvice" />
+     <bean id="catAopAdvice" class="com.dianping.cat.aop.CatAopAdvice" />
      <aop:config>
      <aop:aspectref="catAopAdvice">
      <aop:pointcutid="catAroundSqlCallMethod"expression="execution(* com.springinaction.springidol.Performer.perform(..))"/>
