@@ -35,7 +35,7 @@ public class ReportFacade extends ContainerHolder implements LogEnabled, Initial
 				return false;
 			} else {
 
-				m_logger.info("builderReport [type]"+type+ "[name]"+reportName+"[reportPeriod]"+reportPeriod.toString());
+				m_logger.info("builderReport [type]"+type+ "[name]"+reportName + "[domain]"+reportDomain+"[reportPeriod]"+reportPeriod.toString());
 				boolean result = false;
 
 				if (type == TaskManager.REPORT_HOUR) {
