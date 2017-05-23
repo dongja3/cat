@@ -9,6 +9,7 @@ import java.lang.reflect.Method;
 
 
 public class CatAopAdvice {
+    private String txnType="method";
     /**
      * 切面注解方式埋点 实现以切面方式快速对系统进行埋点:
      <bean id="catAopAdvice" class="com.dianping.cat.aop.CatAopAdvice" />
@@ -63,4 +64,13 @@ public class CatAopAdvice {
     private String getMethodName(Method method){
         return method.getDeclaringClass().getSimpleName() +"."+ method.getName();
     }
+
+    public String getTxnType() {
+        return txnType;
+    }
+
+    public void setTxnType(String txnType) {
+        this.txnType = txnType;
+    }
+
 }
