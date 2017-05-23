@@ -35,7 +35,6 @@ public class ChainReportBuilder  implements TaskBuilder, LogEnabled {
 
     @Override
     public boolean buildDailyTask(String name, String domain, Date period) {
-        m_logger.info("Start build daily Chain...");
         try {
             Date end = TaskHelper.tomorrowZero(period);
             ChainReport chainReport = queryReportsByDuration(domain, period, end, TimeHelper.ONE_HOUR);
@@ -49,7 +48,6 @@ public class ChainReportBuilder  implements TaskBuilder, LogEnabled {
             report.setPeriod(period);
             report.setType(1);
             byte[] binaryContent = DefaultNativeBuilder.build(chainReport);
-            m_logger.info("Chain daily report:"+ report);
             return m_reportService.insertDailyReport(report, binaryContent);
         } catch (Exception e) {
             m_logger.error(e.getMessage(), e);
@@ -61,7 +59,6 @@ public class ChainReportBuilder  implements TaskBuilder, LogEnabled {
 
     @Override
     public boolean buildHourlyTask(String name, String domain, Date period) {
-        m_logger.info("Build hourly Chain...");
         return true;
     }
 

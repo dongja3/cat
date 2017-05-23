@@ -138,12 +138,18 @@ public class Handler implements PageHandler<Context> {
 
         StringBuilder sb = new StringBuilder();
         if(chain2.getLevel()>0){
-            if(chain2.getDependency()>0.85){
-                sb.append("<div class='sucess'>[强依赖]</div>");
-            }
             if(chain2.getTimeRatio()>0.5 && chain2.getAvg()>100){
-                sb.append("<div class='error'>[瓶颈]</div>");
+                sb.append("<div class='error'>[瓶颈]");
             }
+            if(chain2.getDependency()>0.85){
+                if(sb.length()>0){
+                    sb.append("[强依赖]");
+                }else{
+                    sb.append("<div class='text-success'>[强依赖]");
+                }
+            }
+            sb.append("</div>");
+
         }
         chain2.setRemark(sb.toString());
 

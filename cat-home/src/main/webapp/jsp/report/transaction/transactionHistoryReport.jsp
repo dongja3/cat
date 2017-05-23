@@ -135,9 +135,12 @@
 					<c:choose>
 					<c:when test="${status.index > 0}">
 					<a href="?op=historyGraph&domain=${model.domain}&date=${model.date}&ip=${model.ipAddress}&reportType=${payload.reportType}&type=${payload.encodedType}&name=${item.name}${model.customDate}" class="history_graph_link" data-status="${status.index}">[:: show ::]</a> 
+
 					</c:when>
 					<c:otherwise></c:otherwise></c:choose>
-					&nbsp;&nbsp;&nbsp;${w:shorten(e.id, 120)}</td>
+					&nbsp;&nbsp;&nbsp;${w:shorten(e.id, 120)}
+					&nbsp;<a href="./chain?&op=history&domain=${model.domain}&date=${model.date}&name=${e.rootId}">[chain]</a>
+					</td>
 					<td>${w:format(e.totalCount,'#,###,###,###,##0')}</td>
 					<td>${e.failCount}</td>
 					<td>${w:format(e.failPercent/100,'0.0000%')}</td>
