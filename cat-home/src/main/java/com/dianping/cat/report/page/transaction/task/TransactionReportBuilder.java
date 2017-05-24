@@ -1,32 +1,26 @@
 package com.dianping.cat.report.page.transaction.task;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-
-import org.codehaus.plexus.logging.LogEnabled;
-import org.codehaus.plexus.logging.Logger;
-import org.unidal.dal.jdbc.DalException;
-import org.unidal.lookup.annotation.Inject;
-
 import com.dianping.cat.Cat;
 import com.dianping.cat.configuration.NetworkInterfaceManager;
 import com.dianping.cat.consumer.transaction.TransactionAnalyzer;
 import com.dianping.cat.consumer.transaction.TransactionReportCountFilter;
 import com.dianping.cat.consumer.transaction.model.entity.TransactionReport;
 import com.dianping.cat.consumer.transaction.model.transform.DefaultNativeBuilder;
-import com.dianping.cat.core.dal.DailyGraph;
-import com.dianping.cat.core.dal.DailyGraphDao;
-import com.dianping.cat.core.dal.DailyReport;
-import com.dianping.cat.core.dal.Graph;
-import com.dianping.cat.core.dal.GraphDao;
-import com.dianping.cat.core.dal.MonthlyReport;
-import com.dianping.cat.core.dal.WeeklyReport;
+import com.dianping.cat.core.dal.*;
 import com.dianping.cat.helper.TimeHelper;
 import com.dianping.cat.report.page.transaction.service.TransactionReportService;
 import com.dianping.cat.report.task.TaskBuilder;
 import com.dianping.cat.report.task.TaskHelper;
+import org.codehaus.plexus.logging.LogEnabled;
+import org.codehaus.plexus.logging.Logger;
+import org.unidal.dal.jdbc.DalException;
+import org.unidal.lookup.annotation.Inject;
+import org.unidal.lookup.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 public class TransactionReportBuilder implements TaskBuilder, LogEnabled {
 
@@ -101,6 +95,10 @@ public class TransactionReportBuilder implements TaskBuilder, LogEnabled {
 			List<Graph> graphs = buildHourlyGraphs(name, domain, period);
 			if (graphs != null) {
 				for (Graph graph : graphs) {
+					if(StringUtils.isEmpty(graph.getSummaryContent())){
+						m_logger.warn("Empty Transaction:"+ graph.getDomain()+"|"+graph.getIp()+"|"+graph.getPeriod());
+						continue;
+					}
 					m_graphDao.insert(graph);
 				}
 			}
