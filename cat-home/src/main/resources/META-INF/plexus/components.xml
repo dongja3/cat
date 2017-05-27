@@ -1756,6 +1756,11 @@
 				</requirement>
 				<requirement>
 					<role>com.dianping.cat.report.task.TaskBuilder</role>
+					<role-hint>chain</role-hint>
+					<field-name>m_chainReportBuilder</field-name>
+				</requirement>
+				<requirement>
+					<role>com.dianping.cat.report.task.TaskBuilder</role>
 					<role-hint>event</role-hint>
 					<field-name>m_eventReportBuilder</field-name>
 				</requirement>
