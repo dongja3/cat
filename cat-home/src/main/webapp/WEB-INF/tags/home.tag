@@ -63,13 +63,29 @@
 							<span class="menu-text">告警文档</span>
 						</a>
 						<b class="arrow"></b>
-					</li><li id="integrationButton" >
+					</li>
+					<li id="integrationButton" >
 						<a href="/cat/r/home?op=view&docName=integration">
 							<i class="menu-icon fa fa-cutlery"></i>
 							<span class="menu-text">集成文档</span>
 						</a>
 						<b class="arrow"></b>
 					</li>
+					<li id="integrationButton" >
+						<a href="/cat/r/home?op=view&docName=integration_piwik">
+							<i class="menu-icon fa fa-cutlery"></i>
+							<span class="menu-text">PIWIK集成</span>
+						</a>
+						<b class="arrow"></b>
+					</li>
+					<li id="integrationButton" >
+						<a href="/cat/r/home?op=view&docName=integration_cat">
+							<i class="menu-icon fa fa-cutlery"></i>
+							<span class="menu-text">CAT集成</span>
+						</a>
+						<b class="arrow"></b>
+					</li>
+
 					<li id="developButton" >
 						<a href="/cat/r/home?op=view&docName=develop">
 							<i class="menu-icon glyphicon glyphicon-refresh"></i>

@@ -21,6 +21,12 @@
 	   	<c:when test="${payload.docName == 'integration'}">
 	   		<%@ include file="integrating.jsp"%>
 	   	</c:when>
+	   	<c:when test="${payload.docName == 'integration_cat'}">
+        	 <%@ include file="integrating_cat.jsp"%>
+        </c:when>
+        <c:when test="${payload.docName == 'integration_piwik'}">
+        	 <%@ include file="integrating_piwik.jsp"%>
+        </c:when>
 	   	<c:when test="${payload.docName == 'user'}">
 	   		<%@ include file="userDocument.jsp"%>
 	   	</c:when>
