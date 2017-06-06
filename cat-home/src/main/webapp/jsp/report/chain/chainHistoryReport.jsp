@@ -23,17 +23,17 @@
 		<th>
 				&nbsp;[<c:choose>
 				<c:when test="${payload.minCallCount<=0}">
-					<a href="?op=history&domain=${model.domain}&date=${model.date}&minCallCount=0&reportType=${payload.reportType}"}" class="current">ALL</a>
+					<a href="?op=history&domain=${model.domain}&date=${model.date}&minCallCount=0&reportType=${payload.reportType}" class="current">ALL</a>
 				</c:when>
 				<c:otherwise>
-						<a href="?op=history&domain=${model.domain}&date=${model.date}&minCallCount=0&reportType=${payload.reportType}"}">ALL</a>
+						<a href="?op=history&domain=${model.domain}&date=${model.date}&minCallCount=0&reportType=${payload.reportType}">ALL</a>
 				</c:otherwise>
 			</c:choose>]&nbsp;
 		</th>
 		<th>
 				&nbsp;[<c:choose>
 				<c:when test="${payload.minCallCount==3}">
-					<a href="?op=history&domain=${model.domain}&date=${model.date}&minCallCount=3&reportType=${payload.reportType}"}" class="current">3</a>
+					<a href="?op=history&domain=${model.domain}&date=${model.date}&minCallCount=3&reportType=${payload.reportType}" class="current">3</a>
 				</c:when>
 				<c:otherwise>
 						<a href="?op=history&domain=${model.domain}&date=${model.date}&minCallCount=3&reportType=${payload.reportType}">3</a>
@@ -102,7 +102,7 @@
 		</tr>
 		<c:forEach var="chain" items="${report.chains}">
 				<tr>
-					<td class="left"><a href="?op=history&domain=${model.domain}&date=${model.date}&name=${chain.transactionName}&reportType=${payload.reportType}"}"> ${chain.transactionName}</a></td>
+					<td class="left"><a href="?op=history&domain=${model.domain}&date=${model.date}&name=${chain.transactionName}&reportType=${payload.reportType}"> ${chain.transactionName}</a></td>
 					<td class="right"> ${chain.callCount}</td>
 					<td class="right">${w:format(chain.avg,'###,##0.0')}</td>
 				</tr>
