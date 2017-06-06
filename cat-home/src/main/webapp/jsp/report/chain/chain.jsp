@@ -32,11 +32,11 @@
 		</th>
 		<th>
 				&nbsp;[<c:choose>
-				<c:when test="${payload.minCallCount==1}">
-					<a href="?domain=${model.domain}&date=${model.date}&minCallCount=1"class="current">1</a>
+				<c:when test="${payload.minCallCount==3}">
+					<a href="?domain=${model.domain}&date=${model.date}&minCallCount=3"class="current">3</a>
 				</c:when>
 				<c:otherwise>
-						<a href="?domain=${model.domain}&date=${model.date}&minCallCount=1">1</a>
+						<a href="?domain=${model.domain}&date=${model.date}&minCallCount=3">3</a>
 				</c:otherwise>
 			</c:choose>]&nbsp;
 		</th>
