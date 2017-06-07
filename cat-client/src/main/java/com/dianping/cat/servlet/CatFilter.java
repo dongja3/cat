@@ -20,6 +20,8 @@ import java.util.List;
 public class CatFilter implements Filter {
 
 	private List<Handler> m_handlers = new ArrayList<Handler>();
+	private static  boolean piwikEnabled=false;
+	private static String[] ignoreUrIPrefixArray;
 
 	@Override
 	public void destroy() {
@@ -29,7 +31,6 @@ public class CatFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
 	      ServletException {
 		Context ctx = new Context((HttpServletRequest) request, (HttpServletResponse) response, chain, m_handlers);
-
 		ctx.handle();
 	}
 
@@ -43,6 +44,18 @@ public class CatFilter implements Filter {
 		m_handlers.add(CatHandler.LOG_SPAN);
 		m_handlers.add(CatHandler.LOG_CLIENT_PAYLOAD);
 		m_handlers.add(CatHandler.ID_SETUP);
+		m_handlers.add(CatHandler.PIWIK);
+		String strPiwikEnabled = filterConfig.getInitParameter("piwikEnabled");
+		String ignoreUrlPrefixs = filterConfig.getInitParameter("ignoreUrIPrefix");
+
+		if("true".equalsIgnoreCase(strPiwikEnabled)){
+			piwikEnabled=true;
+		}
+
+		if(ignoreUrlPrefixs!=null){
+			ignoreUrIPrefixArray = ignoreUrlPrefixs.split(";");
+		}
+
 	}
 
 	private static enum CatHandler implements Handler {
@@ -201,7 +214,7 @@ public class CatFilter implements Filter {
 			private String getRequestURI(HttpServletRequest req) {
 				String url = req.getRequestURI();
 				int length = url.length();
-				String headerUri = req.getHeader("cat_url");
+				String headerUri = req.getHeader("cat_uri");
 				if(headerUri!=null){
 					return headerUri;
 				}
@@ -252,13 +265,34 @@ public class CatFilter implements Filter {
 					}
 				}
 
-				return sb.toString();
+				String uri = sb.toString();
+				if(ignoreUrIPrefixArray==null){
+					return uri;
+				}
+				int index;
+				for(String prefix : ignoreUrIPrefixArray){
+					if(prefix==null||prefix.trim().length()==0){
+						continue;
+					}
+					index = uri.indexOf(prefix);
+					if(index<0){
+						continue;
+					}
+					uri = uri.substring(index+prefix.length());
+					return uri;
+				}
+
+				return uri;
 			}
 
 			@Override
 			public void handle(Context ctx) throws IOException, ServletException {
 				HttpServletRequest req = ctx.getRequest();
+				String uri = getRequestURI(req);
 				Transaction t = Cat.newTransaction(ctx.getType(), getRequestURI(req));
+				if(piwikEnabled){
+					ctx.getResponse().setHeader("cat_uri",uri);
+				}
 				try {
 					ctx.handle();
 					customizeStatus(t, req);
@@ -282,6 +316,19 @@ public class CatFilter implements Filter {
 
 			private boolean isNumber(char c) {
 				return (c >= '0' && c <= '9') || c == '.' || c == '-' || c == ',';
+			}
+		},
+
+		PIWIK{
+			@Override
+			public void handle(Context ctx) throws IOException, ServletException {
+				boolean isTraceMode = Cat.getManager().isTraceMode();
+				HttpServletResponse res = ctx.getResponse();
+
+				if (isTraceMode) {
+				}
+
+				ctx.handle();
 			}
 		};
 	}
