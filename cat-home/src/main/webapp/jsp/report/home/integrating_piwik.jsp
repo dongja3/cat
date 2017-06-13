@@ -4,10 +4,12 @@
 <p class="detailContent">默认transaction Type 是method</p>
 <xmp class="well">
 EXT：<script src="http://101.37.202.78/piwik/oocl_piwik.js"></script>
+
 Angular:<script src="http://dongja3-w7/piwik/oocl_piwik.js"></script>
 </xmp>
 
 <dt><h5 class="text-success">2.APP自定义oocl_piwik_config.js，并放在oocl_piwik.js之前</h5></dt>
+<p class="detailContent">EXT的cookie中没有userid，所以oocl_piwik_config.js中的callback函数请自行编写用于获取userid。</p>
 <xmp class="well">
 EXT中oocl_piwik_config.js配置如下：
 oocl_piwik_config = {
@@ -20,7 +22,6 @@ oocl_piwik_config = {
     }
   ]
 }
-因为cookie中没有userid，所以oocl_piwik_config.js中的callback函数请自行编写用于获取userid。
 
 Angular中oocl_piwik_config.js配置如下：
 oocl_piwik_config = {
@@ -30,15 +31,17 @@ oocl_piwik_config = {
 	      url: 'http://zhangte4-w7:3000',
 	      siteId: 3,
 	      cookieid: 'connect.sid'
-	    }
-	  ]
-	}
+	  }
+	]
+}
 </xmp>
 
 <dt><h5 class="text-success">3.PIWIK EXTJS/ANGULAR 插件</h5></dt>
-<p class="detailContent">使用该插件后将自动监控Ajax Call</p>
+<p class="detailContent">使用该插件后将自动监控Ajax Call，在Angular插件中提供了对module绑定拦截器的函数，请对每个需要监控的module加入这段代码：
+oocl_piwik_tracker.setInterceptor(module);</p>
 <xmp class="well">
 EXT插件：<script src="http://101.37.202.78/piwik/oocl_piwik_ext.js"></script>
+
 Angular插件:<script src="http://dongja3-w7/piwik/oocl_piwik_angular_1.4.js"></script>
 </xmp>
 
