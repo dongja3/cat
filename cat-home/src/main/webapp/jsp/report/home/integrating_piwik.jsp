@@ -16,7 +16,7 @@ oocl_piwik_config = {
 	        url: '',//your url here
 	        siteId: ,//website id in piwik
 	        cookieid: ''//cookie name to get userid
-	   }
+	  }
 	]
 }
 
@@ -30,7 +30,7 @@ oocl_piwik_config = {
 	        url: '',//your url here
 	        siteId: ,//website id in piwik
 	        cookieid_callback: ,//function to get userid
-	   }
+	  }
 	]
 }
 
@@ -75,7 +75,7 @@ oocl_piwik_config = {
 	        url: 'http://localhost:3000',//your url here
 	        siteId: 1,//website id in piwik
 	        cookieid_callback: getUserId,//function to get userid
-	   }
+	  }
 	]
 }
 <p class="detailContent">配置带cookie的oocl_piwik_config.js文件</p>
@@ -87,7 +87,7 @@ oocl_piwik_config = {
 	        url: 'http://localhost:3000',//your url here
 	        siteId: 1,//website id in piwik
 	        cookieid: 'test.sid'//cookie name to get userid
-	   }
+	  }
 	]
 }
 </xmp>
