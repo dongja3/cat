@@ -12,11 +12,11 @@
 oocl_piwik_config = {
 	  piwik_sites: [
       {
-	      piwik_url: 'http://{domain or ip}/piwik',//url to piwik
-	      url: '',//your url here
-	      siteId: ,//website id in piwik
-	      cookieid: ''//cookie name to get userid
-	  }
+	        piwik_url: 'http://{domain or ip}/piwik',//url to piwik
+	        url: '',//your url here
+	        siteId: ,//website id in piwik
+	        cookieid: ''//cookie name to get userid
+	   }
 	]
 }
 
@@ -24,13 +24,13 @@ oocl_piwik_config = {
 <p class="detailContent">如userid不是存在cookie中，请自行编写函数用于获取userid:</p>
 <xmp class="well">
 oocl_piwik_config = {
-  piwik_sites: [
-    {
+    piwik_sites: [
+      {
           piwik_url: 'http://{domain or ip}/piwik',//url to piwik
-	      url: '',//your url here
+	        url: '',//your url here
           siteId: ,//website id in piwik
           cookieid_callback:,//function to get userid
-    }
+      }
   ]
 }
 </xmp>
@@ -68,25 +68,25 @@ oocl_piwik_tracker.setupContext('search/userids');
 <p class="detailContent">配置无cookie的oocl_piwik_config.js文件</p>
 <xmp class="well">
 oocl_piwik_config = {
-  piwik_sites: [
-    {
+    piwik_sites: [
+      {
           piwik_url: 'http://192.168.0.24/piwik',//url to piwik
-	      url: 'http://localhost:3000',//your url here
+	        url: 'http://localhost:3000',//your url here
           siteId: 1,//website id in piwik
           cookieid_callback:getUserId,//function to get userid
-    }
+      }
   ]
 }
 <p class="detailContent">配置带cookie的oocl_piwik_config.js文件</p>
 <xmp class="well">
 oocl_piwik_config = {
-  piwik_sites: [
-    {
+    piwik_sites: [
+      {
           piwik_url: 'http://192.168.0.24/piwik',//url to piwik
-	      url: 'http://localhost:3000',//your url here
+	        url: 'http://localhost:3000',//your url here
           siteId: 1,//website id in piwik
           cookieid: 'test.sid'//cookie name to get userid
-    }
+      }
   ]
 }
 </xmp>
