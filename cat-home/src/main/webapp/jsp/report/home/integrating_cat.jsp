@@ -9,6 +9,16 @@
     <filter>
         <filter-name>cat-filter</filter-name>
         <filter-class>com.dianping.cat.servlet.CatFilter</filter-class>
+        <!--initial parameter to enabled piwik, optional, default value is false -->
+        <init-param>
+            <param-name>piwikEnabled</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <!--initial parameter to set ignoreUrIPrefixArray, optional -->
+        <init-param>
+            <param-name>ignoreUrIPrefixArray</param-name>
+            <param-value>/cat/;/service/</param-value>
+        </init-param>
     </filter>
     <filter-mapping>
         <filter-name>cat-filter</filter-name>
