@@ -10,7 +10,7 @@
 <p class="detailContent">如果userid存放在cookie中，直接使用cookie名称</p>
 <xmp class="well">oocl_piwik_config.js文件配置如下：
 oocl_piwik_config = {
-	  piwik_sites: [
+	piwik_sites: [
       {
 	        piwik_url: 'http://{domain or ip}/piwik',//url to piwik
 	        url: '',//your url here
@@ -27,7 +27,7 @@ oocl_piwik_config = {
     piwik_sites: [
       {
           piwik_url: 'http://{domain or ip}/piwik',//url to piwik
-	        url: '',//your url here
+	      url: '',//your url here
           siteId: ,//website id in piwik
           cookieid_callback:,//function to get userid
       }
@@ -71,7 +71,7 @@ oocl_piwik_config = {
     piwik_sites: [
       {
           piwik_url: 'http://192.168.0.24/piwik',//url to piwik
-	        url: 'http://localhost:3000',//your url here
+	      url: 'http://localhost:3000',//your url here
           siteId: 1,//website id in piwik
           cookieid_callback:getUserId,//function to get userid
       }
@@ -83,7 +83,7 @@ oocl_piwik_config = {
     piwik_sites: [
       {
           piwik_url: 'http://192.168.0.24/piwik',//url to piwik
-	        url: 'http://localhost:3000',//your url here
+	      url: 'http://localhost:3000',//your url here
           siteId: 1,//website id in piwik
           cookieid: 'test.sid'//cookie name to get userid
       }
