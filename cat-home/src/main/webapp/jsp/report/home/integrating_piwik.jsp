@@ -26,10 +26,10 @@ oocl_piwik_config = {
 oocl_piwik_config = {
     piwik_sites: [
       {
-          piwik_url: 'http://{domain or ip}/piwik',//url to piwik
-	      url: '',//your url here
-          siteId: ,//website id in piwik
-          cookieid_callback:,//function to get userid
+            piwik_url: 'http://{domain or ip}/piwik',//url to piwik
+	        url: '',//your url here
+            siteId: ,//website id in piwik
+            cookieid_callback:,//function to get userid
       }
   ]
 }
@@ -70,10 +70,10 @@ oocl_piwik_tracker.setupContext('search/userids');
 oocl_piwik_config = {
     piwik_sites: [
       {
-          piwik_url: 'http://192.168.0.24/piwik',//url to piwik
-	      url: 'http://localhost:3000',//your url here
-          siteId: 1,//website id in piwik
-          cookieid_callback:getUserId,//function to get userid
+            piwik_url: 'http://192.168.0.24/piwik',//url to piwik
+	        url: 'http://localhost:3000',//your url here
+            siteId: 1,//website id in piwik
+            cookieid_callback:getUserId,//function to get userid
       }
   ]
 }
@@ -82,10 +82,10 @@ oocl_piwik_config = {
 oocl_piwik_config = {
     piwik_sites: [
       {
-          piwik_url: 'http://192.168.0.24/piwik',//url to piwik
-	      url: 'http://localhost:3000',//your url here
-          siteId: 1,//website id in piwik
-          cookieid: 'test.sid'//cookie name to get userid
+            piwik_url: 'http://192.168.0.24/piwik',//url to piwik
+	        url: 'http://localhost:3000',//your url here
+            siteId: 1,//website id in piwik
+            cookieid: 'test.sid'//cookie name to get userid
       }
   ]
 }
