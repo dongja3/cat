@@ -3,6 +3,7 @@ package com.dianping.cat.servlet;
 import com.dianping.cat.Cat;
 import com.dianping.cat.CatConstants;
 import com.dianping.cat.configuration.client.entity.Server;
+import com.dianping.cat.layercontext.RemoteCallLog;
 import com.dianping.cat.message.Message;
 import com.dianping.cat.message.Transaction;
 import com.dianping.cat.message.internal.DefaultMessageManager;
@@ -46,7 +47,7 @@ public class CatFilter implements Filter {
 		m_handlers.add(CatHandler.ID_SETUP);
 		m_handlers.add(CatHandler.PIWIK);
 		String strPiwikEnabled = filterConfig.getInitParameter("piwikEnabled");
-		String ignoreUrlPrefixs = filterConfig.getInitParameter("ignoreUrIPrefix");
+		String ignoreUrlPrefixs = filterConfig.getInitParameter("ignoreUrlPrefix");
 
 		if("true".equalsIgnoreCase(strPiwikEnabled)){
 			piwikEnabled=true;
@@ -64,6 +65,7 @@ public class CatFilter implements Filter {
 			@Override
 			public void handle(Context ctx) throws IOException, ServletException {
 				HttpServletRequest req = ctx.getRequest();
+				RemoteCallLog.logRemoteCallService(req);
 				boolean top = !Cat.getManager().hasContext();
 
 				ctx.setTop(top);
@@ -289,10 +291,11 @@ public class CatFilter implements Filter {
 			public void handle(Context ctx) throws IOException, ServletException {
 				HttpServletRequest req = ctx.getRequest();
 				String uri = getRequestURI(req);
-				Transaction t = Cat.newTransaction(ctx.getType(), getRequestURI(req));
-				if(piwikEnabled){
-					ctx.getResponse().setHeader("cat_uri",uri);
-				}
+				uri = removeJsonGetParameter(uri);
+				Transaction t = Cat.newTransaction(ctx.getType(), uri);
+//				if(piwikEnabled){
+//					ctx.getResponse().setHeader("cat_uri",uri);
+//				}
 				try {
 					ctx.handle();
 					customizeStatus(t, req);
@@ -312,6 +315,13 @@ public class CatFilter implements Filter {
 					customizeUri(t, req);
 					t.complete();
 				}
+			}
+
+			private String removeJsonGetParameter(String uri){
+				if(uri.indexOf("{")==-1){
+					return uri;
+				}
+				return uri.substring(0,uri.indexOf("{")-1);
 			}
 
 			private boolean isNumber(char c) {
