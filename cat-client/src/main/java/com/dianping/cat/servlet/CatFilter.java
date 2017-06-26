@@ -15,6 +15,8 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +24,7 @@ public class CatFilter implements Filter {
 
 	private List<Handler> m_handlers = new ArrayList<Handler>();
 	private static  boolean piwikEnabled=false;
-	private static String[] ignoreUrIPrefixArray;
+	private static String[] ignoreUrlPrefixArray;
 
 	@Override
 	public void destroy() {
@@ -54,7 +56,7 @@ public class CatFilter implements Filter {
 		}
 
 		if(ignoreUrlPrefixs!=null){
-			ignoreUrIPrefixArray = ignoreUrlPrefixs.split(";");
+			ignoreUrlPrefixArray = ignoreUrlPrefixs.split(";");
 		}
 
 	}
@@ -267,24 +269,7 @@ public class CatFilter implements Filter {
 					}
 				}
 
-				String uri = sb.toString();
-				if(ignoreUrIPrefixArray==null){
-					return uri;
-				}
-				int index;
-				for(String prefix : ignoreUrIPrefixArray){
-					if(prefix==null||prefix.trim().length()==0){
-						continue;
-					}
-					index = uri.indexOf(prefix);
-					if(index<0){
-						continue;
-					}
-					uri = uri.substring(index+prefix.length());
-					return uri;
-				}
-
-				return uri;
+				return sb.toString();
 			}
 
 			@Override
@@ -318,6 +303,27 @@ public class CatFilter implements Filter {
 			}
 
 			private String removeJsonGetParameter(String uri){
+
+				try {
+					uri = URLDecoder.decode(uri,"UTF-8");
+				} catch (UnsupportedEncodingException e) {
+				   return uri;
+				}
+
+				if(ignoreUrlPrefixArray!=null){
+					int index;
+					for(String prefix : ignoreUrlPrefixArray){
+						if(prefix==null||prefix.trim().length()==0){
+							continue;
+						}
+						index = uri.indexOf(prefix);
+						if(index<0){
+							continue;
+						}
+						uri = uri.substring(index+prefix.length());
+					}
+				}
+
 				if(uri.indexOf("{")==-1){
 					return uri;
 				}

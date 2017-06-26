@@ -24,8 +24,6 @@ public class CatSessionEventAdapter extends SessionEventAdapter implements LogEn
         if(callMethod!=null){
             t = Cat.newTransaction("JpaQuery", callMethod);
             CalSqlTransactionContext.setSqlTransaction(t);
-        }else{
-            t = CalSqlTransactionContext.getTransaction();
         }
 
         Session session = event.getSession();
