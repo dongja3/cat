@@ -9,7 +9,7 @@ import java.util.Map;
  * Created by DONGJA3 on 6/20/2017.
  */
 public class LayersCatContext implements Cat.Context {
-    public static final String CAT_URI= "cat_uri";
+    public static final String CAT_URL= "cat_url";
     public static final String CAT_LAYER_CONTEXT="cat_layer_context";
     private Map<String, String> properties = new HashMap<String, String>();
 
@@ -23,7 +23,7 @@ public class LayersCatContext implements Cat.Context {
         return properties.get(key);
     }
 
-    public String getCatUri (){
-        return getProperty(CAT_URI);
+    public String getCatUrl (){
+        return getProperty(CAT_URL);
     }
 }

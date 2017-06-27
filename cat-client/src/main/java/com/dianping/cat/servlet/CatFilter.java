@@ -23,8 +23,8 @@ import java.util.List;
 public class CatFilter implements Filter {
 
 	private List<Handler> m_handlers = new ArrayList<Handler>();
-	private static  boolean piwikEnabled=false;
 	private static String[] ignoreUrlPrefixArray;
+	private static String[] ignoreUrlSuffixArray;
 
 	@Override
 	public void destroy() {
@@ -48,15 +48,15 @@ public class CatFilter implements Filter {
 		m_handlers.add(CatHandler.LOG_CLIENT_PAYLOAD);
 		m_handlers.add(CatHandler.ID_SETUP);
 		m_handlers.add(CatHandler.PIWIK);
-		String strPiwikEnabled = filterConfig.getInitParameter("piwikEnabled");
-		String ignoreUrlPrefixs = filterConfig.getInitParameter("ignoreUrlPrefix");
+		String ignoreUrlPrefixes = filterConfig.getInitParameter("ignoreUrlPrefix");
+		String ignoreUrlSuffixes = filterConfig.getInitParameter("ignoreUrlSuffix");
 
-		if("true".equalsIgnoreCase(strPiwikEnabled)){
-			piwikEnabled=true;
+		if(ignoreUrlPrefixes!=null){
+			ignoreUrlPrefixArray = ignoreUrlPrefixes.split(";");
 		}
 
-		if(ignoreUrlPrefixs!=null){
-			ignoreUrlPrefixArray = ignoreUrlPrefixs.split(";");
+		if(ignoreUrlSuffixes!=null){
+			ignoreUrlSuffixArray=ignoreUrlSuffixes.split(";");
 		}
 
 	}
@@ -277,28 +277,42 @@ public class CatFilter implements Filter {
 				HttpServletRequest req = ctx.getRequest();
 				String uri = getRequestURI(req);
 				uri = removeJsonGetParameter(uri);
-				Transaction t = Cat.newTransaction(ctx.getType(), uri);
-//				if(piwikEnabled){
-//					ctx.getResponse().setHeader("cat_uri",uri);
-//				}
+				Transaction t=null;
+				if(uri!=null){
+					 t= Cat.newTransaction(ctx.getType(), uri);
+				}
+
 				try {
 					ctx.handle();
-					customizeStatus(t, req);
+					if(t!=null){
+						customizeStatus(t, req);
+					}
+
 				} catch (ServletException e) {
-					t.setStatus(e);
+					if(t!=null){
+						t.setStatus(e);
+					}
+
 					Cat.logError(e);
 					throw e;
 				} catch (IOException e) {
-					t.setStatus(e);
+					if(t!=null){
+						t.setStatus(e);
+					}
 					Cat.logError(e);
 					throw e;
 				} catch (Throwable e) {
-					t.setStatus(e);
+					if(t!=null){
+						t.setStatus(e);
+					}
 					Cat.logError(e);
 					throw new RuntimeException(e);
 				} finally {
-					customizeUri(t, req);
-					t.complete();
+					if(t!=null){
+						customizeUri(t, req);
+						t.complete();
+					}
+
 				}
 			}
 
@@ -308,6 +322,14 @@ public class CatFilter implements Filter {
 					uri = URLDecoder.decode(uri,"UTF-8");
 				} catch (UnsupportedEncodingException e) {
 				   return uri;
+				}
+
+				if(ignoreUrlSuffixArray!=null){
+					for(String suffix : ignoreUrlSuffixArray){
+						if(uri.indexOf(suffix)>0){
+							return null;
+						}
+					}
 				}
 
 				if(ignoreUrlPrefixArray!=null){

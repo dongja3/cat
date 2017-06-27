@@ -22,7 +22,7 @@ public class CatSessionEventAdapter extends SessionEventAdapter implements LogEn
         String callMethod = CalSqlTransactionContext.getCallMethod();
         Transaction t =null;
         if(callMethod!=null){
-            t = Cat.newTransaction("JpaQuery", callMethod);
+            t = Cat.newTransaction("SQL", callMethod);
             CalSqlTransactionContext.setSqlTransaction(t);
         }
 

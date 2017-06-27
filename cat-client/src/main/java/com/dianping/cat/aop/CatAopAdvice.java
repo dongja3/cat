@@ -1,6 +1,7 @@
 package com.dianping.cat.aop;
 
 import com.dianping.cat.Cat;
+import com.dianping.cat.eclipselink.CalSqlTransactionContext;
 import com.dianping.cat.message.Transaction;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -49,7 +50,8 @@ public class CatAopAdvice {
     public void aroundSqlCallMethod(ProceedingJoinPoint pjp) {
         MethodSignature joinPointObject = (MethodSignature) pjp.getSignature();
         Method method = joinPointObject.getMethod();
-        Transaction t = Cat.newTransaction("jpaQuery", getMethodName(method));
+        Transaction t = Cat.newTransaction("DbFacade", getMethodName(method));
+        CalSqlTransactionContext.setCallMethod(getMethodName(method));
         try {
             pjp.proceed();
             t.setStatus(Transaction.SUCCESS);

@@ -23,13 +23,13 @@ public class RemoteCallLog {
         Cat.Context ctx = new LayersCatContext();
 
         //catUri 目前来自PIWIK http request header
-        String catUri = request.getHeader(LayersCatContext.CAT_URI);
+        String catUri = request.getHeader(LayersCatContext.CAT_URL);
         if(StringUtils.isEmpty(catUri)){
             return GSON.toJson(ctx);
         }
 
         Cat.logRemoteCallClient(ctx);
-        ctx.addProperty(LayersCatContext.CAT_URI, catUri);
+        ctx.addProperty(LayersCatContext.CAT_URL, catUri);
         String jsonString = GSON.toJson(ctx);
         System.out.println(jsonString);
         return jsonString;
@@ -48,7 +48,7 @@ public class RemoteCallLog {
 
         try {
             LayersCatContext ctx = GSON.fromJson(layerContext, LayersCatContext.class);
-            if (ctx.getCatUri() == null) {
+            if (ctx.getCatUrl() == null) {
                 return;
             }
             Cat.logRemoteCallServer(ctx);
