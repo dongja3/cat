@@ -10,9 +10,6 @@ import org.eclipse.persistence.queries.UpdateObjectQuery;
 import org.eclipse.persistence.sessions.Record;
 import org.eclipse.persistence.tools.profiler.PerformanceProfiler;
 
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * Created by DONGJA3 on 5/19/2017.
  */
@@ -25,24 +22,34 @@ class CatQueryProfiler extends PerformanceProfiler {
         if(t==null){
             return result;
         }
-        Set<String> sqlSet = new HashSet<String>();
+        String txnDataItem=null;
 
         if(query instanceof UpdateObjectQuery){
-            sqlSet.add("[U]" + query.getReferenceClass().getSimpleName());
+            txnDataItem=  "[U]" + query.getReferenceClass().getSimpleName();
         }else if(query instanceof InsertObjectQuery){
-            sqlSet.add("[I]" + query.getReferenceClass().getSimpleName());
+            txnDataItem="[I]" + query.getReferenceClass().getSimpleName();
         }else  if(query instanceof DeleteObjectQuery){
-            sqlSet.add("[D]" + query.getReferenceClass().getSimpleName());
+            txnDataItem="[D]" + query.getReferenceClass().getSimpleName();
         }else{
             if(query.getSQLString()==null){
-                sqlSet.add(query.toString());
+                txnDataItem=query.toString();
             }else{
-                sqlSet.add(query.getSQLString()+"\n");
+                txnDataItem=query.getSQLString();
             }
         }
+        if(txnDataItem==null){
+            return result;
+        }
 
-        for(String sql : sqlSet){
-            t.addData(sql+"\n");
+        Object data = t.getData();
+        if(data==null){
+            t.addData(txnDataItem+"\n");
+            return result;
+        }
+
+        String dataString = data.toString();
+        if(!dataString.contains(txnDataItem)){
+            t.addData(txnDataItem+"\n");
         }
 
         return result;

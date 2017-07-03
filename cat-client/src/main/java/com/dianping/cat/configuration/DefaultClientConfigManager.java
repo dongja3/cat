@@ -1,5 +1,16 @@
 package com.dianping.cat.configuration;
 
+import com.dianping.cat.Cat;
+import com.dianping.cat.configuration.client.entity.ClientConfig;
+import com.dianping.cat.configuration.client.entity.Domain;
+import com.dianping.cat.configuration.client.entity.Server;
+import com.dianping.cat.configuration.client.transform.DefaultSaxParser;
+import org.codehaus.plexus.logging.LogEnabled;
+import org.codehaus.plexus.logging.Logger;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+import org.unidal.helper.Files;
+
 import java.io.File;
 import java.io.InputStream;
 import java.util.Collections;
@@ -7,20 +18,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.codehaus.plexus.logging.LogEnabled;
-import org.codehaus.plexus.logging.Logger;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
-import org.unidal.helper.Files;
-
-import com.dianping.cat.Cat;
-import com.dianping.cat.configuration.client.entity.ClientConfig;
-import com.dianping.cat.configuration.client.entity.Domain;
-import com.dianping.cat.configuration.client.entity.Server;
-import com.dianping.cat.configuration.client.transform.DefaultSaxParser;
-
 public class DefaultClientConfigManager implements LogEnabled, ClientConfigManager, Initializable {
 	private static final String CAT_CLIENT_XML = "/META-INF/cat/client.xml";
+
+	private static final String CAT_APP_PROPERTIES="cat_app.properties";
 
 	private static final String PROPERTIES_CLIENT_XML = "/META-INF/app.properties";
 	
@@ -162,11 +163,15 @@ public class DefaultClientConfigManager implements LogEnabled, ClientConfigManag
 			if (in == null) {
 				in = Cat.class.getResourceAsStream(PROPERTIES_CLIENT_XML);
 			}
+
+			//cat_app.properties can put into config path
+			if (in == null) {
+				in =Thread.currentThread().getContextClassLoader().getResourceAsStream(CAT_APP_PROPERTIES);
+			}
+
 			if (in != null) {
 				Properties prop = new Properties();
-
 				prop.load(in);
-
 				appName = prop.getProperty("app.name");
 				if (appName != null) {
 					m_logger.info(String.format("Find domain name %s from app.properties.", appName));
@@ -176,6 +181,7 @@ public class DefaultClientConfigManager implements LogEnabled, ClientConfigManag
 				}
 			} else {
 				m_logger.info(String.format("Can't find app.properties in %s", PROPERTIES_CLIENT_XML));
+				m_logger.info(String.format("Can't find  %s in classpath", CAT_APP_PROPERTIES));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
