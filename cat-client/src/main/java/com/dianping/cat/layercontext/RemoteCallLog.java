@@ -30,9 +30,7 @@ public class RemoteCallLog {
 
         Cat.logRemoteCallClient(ctx);
         ctx.addProperty(LayersCatContext.CAT_URL, catUri);
-        String jsonString = GSON.toJson(ctx);
-        System.out.println(jsonString);
-        return jsonString;
+        return GSON.toJson(ctx);
     }
 
     /**
@@ -41,7 +39,6 @@ public class RemoteCallLog {
      * */
     public static void logRemoteCallService(HttpServletRequest request){
         String layerContext = request.getHeader(LayersCatContext.CAT_LAYER_CONTEXT);
-        System.out.println("LayerContext:" + layerContext);
         if(StringUtils.isEmpty(layerContext)){
             return;
         }

@@ -6,11 +6,13 @@ import org.junit.runners.JUnit4;
 
 import com.dianping.cat.Cat;
 
+import java.io.IOException;
+
 @RunWith(JUnit4.class)
 public class TransactionTest {
 	@Test
-	public void testNormal() {
-		Transaction t = Cat.getProducer().newTransaction("URL", "MyPage");
+	public void testNormal() throws IOException {
+		Transaction t = Cat.getProducer().newTransaction("URL11", "MyPage");
 
 		try {
 			// do your business here
@@ -25,5 +27,7 @@ public class TransactionTest {
 		} finally {
 			t.complete();
 		}
+
+		System.in.read();
 	}
 }

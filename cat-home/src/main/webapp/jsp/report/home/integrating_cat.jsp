@@ -14,9 +14,9 @@
             <param-name>piwikEnabled</param-name>
             <param-value>true</param-value>
         </init-param>
-        <!--initial parameter to set ignoreUrIPrefix, optional -->
+        <!--initial parameter to set ignoreUrlPrefix, optional -->
         <init-param>
-            <param-name>ignoreUrIPrefix</param-name>
+            <param-name>ignoreUrlPrefix</param-name>
             <param-value>/cat/;/service/</param-value>
         </init-param>
     </filter>
