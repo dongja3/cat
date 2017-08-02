@@ -12,8 +12,8 @@
 oocl_piwik_config = {
 	piwik_sites: [
 	  {
-		  piwik_url: 'http://{domain or ip}/piwik',//对应的piwik地址
-		  url: '',//被监控的网页的地址
+		piwik_url: 'http://{domain or ip}/piwik',//对应的piwik地址
+		url: '',//被监控的网页的地址
 		siteId: ,//piwik中网站对应的id
 		disable:,//本网站禁用piwik,bool类型,此项可无
 		cookieid: ''//userid对应的cookie名
@@ -30,8 +30,8 @@ oocl_piwik_config = {
 oocl_piwik_config = {
 	piwik_sites: [
       {
-	    piwik_url: 'http://{domain or ip}/piwik',//对应的piwik地址
-	    url: '',//被监控的网站的地址
+		piwik_url: 'http://{domain or ip}/piwik',//对应的piwik地址
+		url: '',//被监控的网站的地址
 		siteId: ,//piwik中网站对应的id
 		disable:,//本网站禁用piwik,bool类型,此项可无
 		cookieid: ''//userid对应的cookie名
