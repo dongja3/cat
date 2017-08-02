@@ -34,7 +34,7 @@ oocl_piwik_config = {
 		url: '',//被监控的网站的地址
 		siteId: ,//piwik中网站对应的id
 		disable:,//本网站禁用piwik,bool类型,此项可无
-		cookieid: ''//userid对应的cookie名
+		cookieid_callback: ''//获取userid的方法名
 	  }
 	],
 	ignoreServicePrefix: [],//url中该部分及之前的内容被忽略,此项可无,如：/piwik/fwk_api/,localhost/piwik/fwk_api/test.html?userid=1,最终只得到test.html
@@ -82,17 +82,17 @@ oocl_piwik_config = {
 	piwik_sites: [
       {
 	    piwik_url: 'http://192.168.0.24/piwik',
-	    url: 'http://qatest.com',
-		siteId: 1,
+		url: 'http://qatest.com',
+		siteId:1,
 		disable:false,
-	    cookieid_callback: getUserId
+		cookieid_callback: getUserId
 	  },
 	  {
 	    piwik_url: 'http://192.168.0.24/piwik',
-	    url: 'http://pptest.com',
-		siteId: 2,
+		url: 'http://pptest.com',
+		siteId:2,
 		disable:false,
-	    cookieid_callback: getUserId
+		cookieid_callback: getUserId
 	  }
 	],
 	 ignoreServicePrefix: [
@@ -112,17 +112,17 @@ oocl_piwik_config = {
 	piwik_sites: [
       {
 	    piwik_url: 'http://192.168.0.24/piwik',
-	    url: 'http://qatest.com',
-		siteId: 1,
+		url: 'http://qatest.com',
+		siteId:1,
 		disable:false,
-	    cookieid: 'test.sid'
+		cookieid: 'test.sid'
 	  },
 	  {
 	    piwik_url: 'http://192.168.0.24/piwik',
-	    url: 'http://pptest.com',
-		siteId: 2,
+		url: 'http://test.com',
+		siteId:2,
 		disable:false,
-	    cookieid: 'test.sid'
+		cookieid: 'test.sid'
 	  }
 	],
 	 ignoreServicePrefix: [
