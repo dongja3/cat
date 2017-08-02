@@ -11,13 +11,17 @@
 <xmp class="well">oocl_piwik_config.js文件配置如下：
 oocl_piwik_config = {
 	piwik_sites: [
-      {
-	        piwik_url: 'http://{domain or ip}/piwik',//url to piwik
-	        url: '',//your url here
-	        siteId: ,//website id in piwik
-	        cookieid: ''//cookie name to get userid
+	  {
+	        piwik_url: 'http://{domain or ip}/piwik',//对应的piwik地址
+	        url: '',//被监控的网页的地址
+			siteId: ,//piwik中网站对应的id
+			disable:,//本网站禁用piwik,bool类型,此项可无
+			cookieid: ''//userid对应的cookie名
 	  }
-	]
+	],
+	ignoreServicePrefix: [],//url中该部分及之前的内容被忽略,此项可无,如：'/piwik/fwk_api/',localhost/piwik/fwk_api/test.html?userid=1,最终只得到test.html
+	canIgnorRequest: function (request) {},//配置哪些请求被忽略不追踪,此项可无，input:request,return:true/false
+	replaceTitle:function(title){}//配置哪些title需要被替换及替换规则,此项可无,input:title,return:替换后的title
 }
 
 </xmp>
@@ -26,18 +30,22 @@ oocl_piwik_config = {
 oocl_piwik_config = {
 	piwik_sites: [
       {
-	        piwik_url: 'http://{domain or ip}/piwik',//url to piwik
-	        url: '',//your url here
-	        siteId: ,//website id in piwik
-	        cookieid_callback: //function to get userid
+	        piwik_url: 'http://{domain or ip}/piwik',//对应的piwik地址
+	        url: '',//被监控的网站的地址
+			siteId: ,//piwik中网站对应的id
+			disable:,//本网站禁用piwik,bool类型,此项可无
+			cookieid: ''//userid对应的cookie名
 	  }
-	]
+	],
+	ignoreServicePrefix: [],//url中该部分及之前的内容被忽略,此项可无,如：/piwik/fwk_api/,localhost/piwik/fwk_api/test.html?userid=1,最终只得到test.html
+	canIgnorRequest: function (request) {},//配置哪些请求被忽略不追踪,此项可无，input:request,return:true/false
+	replaceTitle:function(title){}//配置哪些title需要被替换及替换规则,此项可无,input:title,return:替换后的title
 }
 
 </xmp>
 
 <dt><h5 class="text-success">3.PIWIK EXTJS 插件</h5></dt>
-<p class="detailContent">使用该插件后将自动监控Ajax Call;</p>
+<p class="detailContent">使用该插件后将自动监控基于Ext.Ajax的Ajax call;</p>
 <xmp class="well">
 <script src="http://{domain or ip}/piwik/oocl_piwik_ext.js"></script>
 </xmp>
@@ -55,7 +63,7 @@ oocl_piwik_tracker.setInterceptor(module);</p>
 <dt><h5 class="text-success">5.Business Function 监控</h5></dt>
 <p class="detailContent">Business function 是按照"/"分组的，用户在Ajax Call 之前调用API可以自定义business function</p>
 <xmp class="well">
-oocl_piwik_tracker.setupContext('search/userids');
+oocl_piwik_tracker.setupContext('bfname');
 </xmp>
 
 <dt><h5 class="text-success">6.完整示例</h5></dt>
@@ -68,30 +76,64 @@ oocl_piwik_tracker.setupContext('search/userids');
 <script src="http://192.168.0.24/piwik/oocl_piwik_ext.js"></script>
 </xmp>
 
-<p class="detailContent">如果cookie中没有保存userid，oocl_piwik_config.js文件配置如下</p>
+<p class="detailContent">如果cookie中没有保存userid，oocl_piwik_config.js文件配置如下,piwik_sites数组可对应不同环境如QA,PP,PRD</p>
 <xmp class="well">
 oocl_piwik_config = {
 	piwik_sites: [
       {
-	        piwik_url: 'http://192.168.0.24/piwik',//url to piwik
-	        url: 'http://localhost:3000',//your url here
-	        siteId: 1,//website id in piwik
-	        cookieid_callback: getUserId//function to get userid
+	        piwik_url: 'http://192.168.0.24/piwik',
+	        url: 'http://qatest.com',
+			siteId: 1,
+			disable:false,
+	        cookieid_callback: getUserId
+	  },
+	  {
+	        piwik_url: 'http://192.168.0.24/piwik',
+	        url: 'http://pptest.com',
+			siteId: 2,
+			disable:false,
+	        cookieid_callback: getUserId
 	  }
-	]
+	],
+	 ignoreServicePrefix: [
+	  '/fwk_api/test'
+	],
+	canIgnorRequest: function (request) {
+		return !!request.cache;
+	},
+	replaceTitle:function(title){
+		return title.replace('!/', '');
+	}
 }
 </xmp>
-<p class="detailContent">如果cookie中保存了userid，oocl_piwik_config.js文件配置如下</p>
+<p class="detailContent">如果cookie中保存了userid，oocl_piwik_config.js文件配置如下,piwik_sites数组可对应不同环境如QA,PP,PRD</p>
 <xmp class="well">
 oocl_piwik_config = {
 	piwik_sites: [
       {
-	        piwik_url: 'http://192.168.0.24/piwik',//url to piwik
-	        url: 'http://localhost:3000',//your url here
-	        siteId: 1,//website id in piwik
-	        cookieid: 'test.sid'//cookie name to get userid
+	        piwik_url: 'http://192.168.0.24/piwik',
+	        url: 'http://qatest.com',
+			siteId: 1,
+			disable:false,
+	        cookieid: 'test.sid'
+	  },
+	  {
+	        piwik_url: 'http://192.168.0.24/piwik',
+	        url: 'http://pptest.com',
+			siteId: 2,
+			disable:false,
+	        cookieid: 'test.sid'
 	  }
-	]
+	],
+	 ignoreServicePrefix: [
+	  '/fwk_api/test'
+	],
+	canIgnorRequest: function (request) {
+		return !!request.cache;
+	},
+	replaceTitle:function(title){
+		return title.replace('!/', '');
+	}
 }
 </xmp>
 
