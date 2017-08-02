@@ -81,18 +81,18 @@ oocl_piwik_tracker.setupContext('bfname');
 oocl_piwik_config = {
 	piwik_sites: [
       {
-	    piwik_url: 'http://192.168.0.24/piwik',
-		url: 'http://qatest.com',
-		siteId:1,
-		disable:false,
-		cookieid_callback: getUserId
+		  piwik_url: 'http://192.168.0.24/piwik',
+		  url: 'http://qatest.com',
+		  siteId:1,
+		  disable:false,
+		  cookieid_callback: getUserId
 	  },
 	  {
-	    piwik_url: 'http://192.168.0.24/piwik',
-		url: 'http://pptest.com',
-		siteId:2,
-		disable:false,
-		cookieid_callback: getUserId
+		  piwik_url: 'http://192.168.0.24/piwik',
+		  url: 'http://pptest.com',
+		  siteId:2,
+		  disable:false,
+		  cookieid_callback: getUserId
 	  }
 	],
 	 ignoreServicePrefix: [
@@ -111,18 +111,18 @@ oocl_piwik_config = {
 oocl_piwik_config = {
 	piwik_sites: [
       {
-	    piwik_url: 'http://192.168.0.24/piwik',
-		url: 'http://qatest.com',
-		siteId:1,
-		disable:false,
-		cookieid: 'test.sid'
+		  piwik_url: 'http://192.168.0.24/piwik',
+		  url: 'http://qatest.com',
+		  siteId:1,
+		  disable:false,
+		  cookieid: 'test.sid'
 	  },
 	  {
-	    piwik_url: 'http://192.168.0.24/piwik',
-		url: 'http://test.com',
-		siteId:2,
-		disable:false,
-		cookieid: 'test.sid'
+		  piwik_url: 'http://192.168.0.24/piwik',
+		  url: 'http://test.com',
+		  siteId:2,
+		  disable:false,
+		  cookieid: 'test.sid'
 	  }
 	],
 	 ignoreServicePrefix: [
