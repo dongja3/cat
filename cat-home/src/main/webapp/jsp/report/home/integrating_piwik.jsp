@@ -36,7 +36,7 @@ oocl_piwik_config = {
 		cookieid: ''//cookie name for userid
 	  }
 	],
-	ignoreServicePrefix:[],//ignore string in the url,eg.:'/piwik/fwk_api/',localhost/piwik/fwk_api/test.html?userid=1,get test.html
+	ignoreServicePrefix:[],//ignore string in the url,eg:'/piwik/fwk_api/',localhost/piwik/fwk_api/test.html?userid=1,get test.html
 	canIgnorRequest: function (request) {},//which kind of request should be ignored,input:request,return:true/false
 	replaceTitle:function(title){}//which kind of title should be replaced,input:title,return: the title after replaced
 }
@@ -78,10 +78,10 @@ _paq.push(['FormAnalytics::trackFormConversion', buttonElement]);
 <p class="detailContent">include js file in this order</p>
 <xmp class="well">
 <script src="./piwik/oocl_piwik_config.js"></script>
-<script src="http://192.168.0.24/piwik/oocl_piwik.js"></script>
+<script src="http://testdomain.com/piwik/oocl_piwik.js"></script>
 <!--ext and angularjs should be used according to your requirement-->
-<script src="http://192.168.0.24/piwik/oocl_piwik_angular_1.4.js"></script>
-<script src="http://192.168.0.24/piwik/oocl_piwik_ext.js"></script>
+<script src="http://testdomain.com/piwik/oocl_piwik_angular_1.4.js"></script>
+<script src="http://testdomain.com/piwik/oocl_piwik_ext.js"></script>
 </xmp>
 
 <p class="detailContent">If cookie does`t store userid，oocl_piwik_config.js is as follows,piwik_sites is an array that can be deployed to different environment such as QA,PP,PRD</p>
