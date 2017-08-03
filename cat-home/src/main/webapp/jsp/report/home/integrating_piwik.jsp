@@ -36,7 +36,7 @@ oocl_piwik_config = {
 		cookieid: ''//cookie name for userid
 	  }
 	],
-	ignoreServicePrefix:[],//ignore string in the url,eg.:'/piwik/fwk_api/',localhost/piwik/fwk_api/test.html?userid=1,finally get test.html
+	ignoreServicePrefix:[],//ignore string in the url,eg.:'/piwik/fwk_api/',localhost/piwik/fwk_api/test.html?userid=1,get test.html
 	canIgnorRequest: function (request) {},//which kind of request should be ignored,input:request,return:true/false
 	replaceTitle:function(title){}//which kind of title should be replaced,input:title,return: the title after replaced
 }
