@@ -12,7 +12,7 @@ oocl_piwik_config = {
 	piwik_sites: [
 	  {
 		piwik_url: 'http://{domain or ip}/piwik',//url to piwik
-		url: '',//your url here
+		url: '',//your url here,notice that if your site uses https,your piwik server should also support https
 		siteId: ,//website id in piwik
 		disable:,//forbid piwik on this site,true or false
 		cookieid: ''//cookie name for userid
@@ -30,7 +30,7 @@ oocl_piwik_config = {
 	piwik_sites: [
       {
 		piwik_url: 'http://{domain or ip}/piwik',//url to piwik
-		url: '',//your url here
+		url: '',//your url here,notice that if your site uses https,your piwik server should also support https
 		siteId: ,//website id in piwik
 		disable:,//forbid piwik on this site,true or false
 		cookieid: ''//cookie name for userid
@@ -43,14 +43,14 @@ oocl_piwik_config = {
 
 </xmp>
 
-<dt><h5 class="text-success">3.PIWIK EXTJS PlUGIN</h5></dt>
+<dt><h5 class="text-success">3.Piwik Extjs Plugin</h5></dt>
 <p class="detailContent">After using this plugin,it will monitor the all ajax call based on Ext.Ajax;</p>
 <xmp class="well">
 <script src="http://{domain or ip}/piwik/oocl_piwik_ext.js"></script>
 </xmp>
 
 
-<dt><h5 class="text-success">4.PIWIK ANGULAR PLUGIN</h5></dt>
+<dt><h5 class="text-success">4.Piwik Angular Plugin</h5></dt>
 <p class="detailContent">After using this plugin,it will bind interceptor to module and monitor all ajax call.Please add this code to every module that needs to be monitored:oocl_piwik_tracker.setInterceptor(moduleName);</p>
 <xmp class="well">
 <script src="http://{domain or ip}/piwik/oocl_piwik_angular_1.4.js"></script>
@@ -64,7 +64,17 @@ oocl_piwik_config = {
 oocl_piwik_tracker.setupContext('bfname');
 </xmp>
 
-<dt><h5 class="text-success">6.Completed Example</h5></dt>
+<dt><h5 class="text-success">6.Form Monitor</h5></dt>
+<p class="detailContent">Piwik can monitor the elements whose tagName is form or the elemants that have an attribute named data-piwik-form.Piwik will monitor the form submit event.If you don`t fire the submit event when submit a form,please add this code to the submit function:</p>
+<xmp class="well">
+_paq.push(['FormAnalytics::trackFormSubmit', buttonElement]);
+</xmp>
+<p class="detailContent">please add these code to the callback function that be called when server returns success:</p>
+<xmp class="well">
+_paq.push(['FormAnalytics::trackFormConversion', buttonElement]);
+</xmp>
+
+<dt><h5 class="text-success">7.Completed Example</h5></dt>
 <p class="detailContent">include js file in this order</p>
 <xmp class="well">
 <script src="./piwik/oocl_piwik_config.js"></script>
@@ -79,14 +89,14 @@ oocl_piwik_tracker.setupContext('bfname');
 oocl_piwik_config = {
 	piwik_sites: [
       {
-		  piwik_url: 'http://192.168.0.24/piwik',
+		  piwik_url: 'http://testdomain.com/piwik',
 		  url: 'http://qatest.com',
 		  siteId:1,
 		  disable:false,
 		  cookieid_callback: getUserId
 	  },
 	  {
-		  piwik_url: 'http://192.168.0.24/piwik',
+		  piwik_url: 'http://testdomain.com/piwik',
 		  url: 'http://pptest.com',
 		  siteId:2,
 		  disable:false,
@@ -109,14 +119,14 @@ oocl_piwik_config = {
 oocl_piwik_config = {
 	piwik_sites: [
       {
-		  piwik_url: 'http://192.168.0.24/piwik',
+		  piwik_url: 'http://testdomain.com/piwik',
 		  url: 'http://qatest.com',
 		  siteId:1,
 		  disable:false,
 		  cookieid: 'test.sid'
 	  },
 	  {
-		  piwik_url: 'http://192.168.0.24/piwik',
+		  piwik_url: 'http://testdomain.com/piwik',
 		  url: 'http://test.com',
 		  siteId:2,
 		  disable:false,
