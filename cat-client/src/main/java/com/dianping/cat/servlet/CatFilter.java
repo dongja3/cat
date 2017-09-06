@@ -327,7 +327,8 @@ public class CatFilter implements Filter {
 				if(ignoreUrlSuffixArray!=null){
 					for(String suffix : ignoreUrlSuffixArray){
 						if(uri.indexOf(suffix)>0){
-							return null;
+							uri=uri.substring(0,uri.indexOf(suffix));
+							return uri;
 						}
 					}
 				}
